@@ -132,7 +132,7 @@ work.age.weighted %>%
               se = FALSE, 
               linetype = 'dashed') +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
-  scale_color_manual(values = c('#c2886d', blog.color), label = c('Work day', 'Not a work day')) +
+  scale_color_manual(values = c('#c2886d', blog.color), label = c('Leisure day', 'Work day')) +
   facet_wrap(~Description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by age and working status",
        subtitle = "2018 American Time Use Survey",
