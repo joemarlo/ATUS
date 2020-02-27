@@ -1,0 +1,14 @@
+
+The data file atusresp_2018.dat (2018 Respondent file) contains 175 variables and 9,593 observations. 
+
+For more information on the 2018 Respondent file, please see the 2018 ATUS Interview Data Dictionary, available online at: https://www.bls.gov/tus/atusintcodebk18.pdf.   
+
+In addition to the data file, three computer programs are contained in atusresp_2018.zip.  If you have SPSS, SAS, or Stata software, you may use these programs to read the data into your statistical software package.  The programs include variable and value labels for most variables.  For information about unlabeled values, please refer to the data dictionary.
+
+The file "atusresp_2018.sps" reads the data into SPSS; some variable names exceed length 8.
+
+The file "atusresp_2018.sas" reads the data into SAS.
+
+The file "atusresp_2018.do" reads the data into Stata.
+
+If you have SAS, SPSS, or Stata software, open the corresponding program, edit the infile (in SAS), file (in SPSS) or import (in Stata) statement to reference the data file on your computer, and run the program. 

@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+Inputs/ATUS-2018/*.dat
+.DS_Store
