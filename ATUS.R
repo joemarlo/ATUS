@@ -1,4 +1,5 @@
 library(tidyverse)
+library(gganimate)
 source('Helper_functions.R')
 
 # import all the files ----------------------------------------------------
@@ -83,7 +84,7 @@ ggsave(filename = "Plots/Activities_by_age.svg",
        plot = last_plot(),
        device = "svg",
        width = 9,
-       height = 9)
+       height = 11)
   
 
 # split by working status -------------------------------------------------
@@ -97,7 +98,6 @@ work.age <- atussum_2018 %>%
   pivot_longer(cols = -c('TUCASEID', 'TUFINLWGT', 'TEAGE'),
                names_to = "activity",
                values_to = 'time') %>% 
-  # mutate(weighted.minutes = TUFINLWGT * time) %>% 
   mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>%
   left_join(simple_codes)
 
@@ -151,5 +151,42 @@ ggsave(filename = "Plots/Activities_by_age_work.svg",
        plot = last_plot(),
        device = "svg",
        width = 9,
-       height = 9)
+       height = 11)
 
+
+# facet plots of all the activities by age split by working status
+work.gif <- work.age.weighted %>% 
+  filter(Code != '50',
+         Code != '05') %>% 
+  group_by(TEAGE, Description, work.status) %>%
+  summarize(weighted.minutes = sum(weighted.minutes)) %>% 
+  mutate(work.status = if_else(work.status, 'Work day', 'Not a work day')) %>% 
+  ggplot(aes(x = TEAGE, y = weighted.minutes)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
+              se = FALSE, 
+              color = blog.color,
+              linetype = 'dashed') +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  facet_wrap(~Description, scales = 'free_y', ncol = 3) +
+  labs(title = "Average daily time spent on activity by age and working status",
+       subtitle = "{closest_state}",
+       caption = 'Source: 2018 American Time Use Survey\nWork day defined as working two or more hours',
+       x = "Age",
+       y = 'Average hours:minutes per day') +
+  theme(strip.text = element_text(size = 6),
+        legend.position = 'bottom',
+        legend.title = element_blank(),
+        plot.caption = element_text(face = "italic",
+                                    size = 5,
+                                    color = 'grey50')) +
+  transition_states(work.status, wrap = FALSE)
+
+# animate and save the gif
+animate(work.gif,
+        width = 575,
+        height = 700,
+        fps = 30,
+        duration = 7)
+anim_save(filename = "Plots/work.gif")
+          

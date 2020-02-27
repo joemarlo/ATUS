@@ -21,3 +21,7 @@ Analysis of American Time Use Survey
 <img src="Plots/Activities_by_age_work.svg" width=79%>
 </p>
 
+<p align="center">
+<img src="Plots/work.gif" width=79%>
+</p>
+
