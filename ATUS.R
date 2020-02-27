@@ -105,7 +105,7 @@ work.age <- atussum_2018 %>%
 #  then join  back to work.age then summarize the activities
 #  by age and this new work status
 work.age.weighted <- work.age %>% 
-  filter(Code == '05') %>% 
+  filter(Code == '05') %>% # exclude generic data code
   group_by(TUCASEID) %>% 
   mutate(work.status = sum(time) > 120) %>%
   select(TUCASEID, work.status) %>%
@@ -123,8 +123,8 @@ work.age.weighted <- work.age.weighted %>%
 
 # facet plots of all the activities by age split by working status
 work.age.weighted %>% 
-  filter(Code != '50',
-         Code != '05') %>% 
+  filter(Code != '50', # exclude generic data code
+         Code != '05') %>% # exclude working code
   group_by(TEAGE, Description, work.status) %>%
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
   ggplot(aes(x = TEAGE, y = weighted.minutes, group = work.status, color = work.status)) +
@@ -156,8 +156,8 @@ ggsave(filename = "Plots/Activities_by_age_work.svg",
 
 # facet plots of all the activities by age split by working status
 work.gif <- work.age.weighted %>% 
-  filter(Code != '50',
-         Code != '05') %>% 
+  filter(Code != '50', # exclude generic data code
+         Code != '05') %>%  # exclude working code
   group_by(TEAGE, Description, work.status) %>%
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
   mutate(work.status = if_else(work.status, 'Work day', 'Not a work day')) %>% 
@@ -174,19 +174,21 @@ work.gif <- work.age.weighted %>%
        caption = 'Source: 2018 American Time Use Survey\nWork day defined as working two or more hours',
        x = "Age",
        y = 'Average hours:minutes per day') +
-  theme(strip.text = element_text(size = 6),
+  theme(plot.title = element_text(size = 16),
+        plot.subtitle = element_text(size = 14),
+        strip.text = element_text(size = 8),
         legend.position = 'bottom',
         legend.title = element_blank(),
         plot.caption = element_text(face = "italic",
-                                    size = 5,
+                                    size = 7,
                                     color = 'grey50')) +
   transition_states(work.status, wrap = FALSE)
 
 # animate and save the gif
 animate(work.gif,
-        width = 575,
-        height = 700,
-        fps = 30,
+        width = 800,
+        height = 980,
+        fps = 24,
         duration = 7)
 anim_save(filename = "Plots/work.gif")
           
