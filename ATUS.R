@@ -123,8 +123,7 @@ work.age.weighted <- work.age.weighted %>%
 
 # facet plots of all the activities by age split by working status
 work.age.weighted %>% 
-  filter(Code != '50', # exclude generic data code
-         Code != '05') %>% # exclude working code
+  filter(Code != '50') %>% # exclude generic data code
   group_by(TEAGE, Description, work.status) %>%
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
   ggplot(aes(x = TEAGE, y = weighted.minutes, group = work.status, color = work.status)) +
@@ -156,11 +155,10 @@ ggsave(filename = "Plots/Activities_by_age_work.svg",
 
 # facet plots of all the activities by age split by working status
 work.gif <- work.age.weighted %>% 
-  filter(Code != '50', # exclude generic data code
-         Code != '05') %>%  # exclude working code
+  filter(Code != '50') %>%  # exclude generic data code
   group_by(TEAGE, Description, work.status) %>%
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
-  mutate(work.status = if_else(work.status, 'Work day', 'Not a work day')) %>% 
+  mutate(work.status = if_else(work.status, 'An average work day', 'An average leisure day')) %>% 
   ggplot(aes(x = TEAGE, y = weighted.minutes)) +
   geom_point(alpha = 0.1) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
@@ -169,8 +167,8 @@ work.gif <- work.age.weighted %>%
               linetype = 'dashed') +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   facet_wrap(~Description, scales = 'free_y', ncol = 3) +
-  labs(title = "Average daily time spent on activity by age and working status",
-       subtitle = "{closest_state}",
+  labs(title = "{closest_state}",
+       subtitle = "Average daily time spent on activity by age",
        caption = 'Source: 2018 American Time Use Survey\nWork day defined as working two or more hours',
        x = "Age",
        y = 'Average hours:minutes per day') +
