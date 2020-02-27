@@ -1,5 +1,5 @@
 # ATUS
-Analysis of American Time Use Survey 
+Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 
 
 ## To-do list
@@ -10,6 +10,8 @@ Analysis of American Time Use Survey
 - [ ] Double check specific activities are categorized correctly (e.g. travel should not include commuting)
 - [ ] Pull out sleep from Personal Care
 - [ ] Explore trends by income
+  - What activities are more indicative of income
+  - Do higher income people work more or less
 
 <br>
 
