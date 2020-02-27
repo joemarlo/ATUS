@@ -64,19 +64,19 @@ age.weighted <- age.weighted %>%
 age.weighted %>% 
   filter(Code != '50') %>% 
   group_by(TEAGE, Description) %>% 
-  summarize(weighted.minutes = sum(weighted.minutes),
-            weighted.hours = sum(weighted.minutes)/60) %>% 
-  ggplot(aes(x = TEAGE, y = weighted.hours)) +
+  summarize(weighted.minutes = sum(weighted.minutes)) %>%
+  ggplot(aes(x = TEAGE, y = weighted.minutes)) +
+  geom_point(alpha = 0.2, color = blog.color) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
               se = FALSE, 
               color = blog.color,
               linetype = 'dashed') +
-  geom_point(alpha = 0.2, color = blog.color) +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   facet_wrap(~Description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by age",
        subtitle = "2018 American Time Use Survey",
        x = "Age",
-       y = 'Average hours per day') +
+       y = 'Average hours:minutes per day') +
   theme(strip.text = element_text(size = 6))
   
 ggsave(filename = "Plots/Activities_by_age.svg",
@@ -97,8 +97,8 @@ work.age <- atussum_2018 %>%
   pivot_longer(cols = -c('TUCASEID', 'TUFINLWGT', 'TEAGE'),
                names_to = "activity",
                values_to = 'time') %>% 
-  mutate(weighted.minutes = TUFINLWGT * time) %>% 
-  mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>% 
+  # mutate(weighted.minutes = TUFINLWGT * time) %>% 
+  mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>%
   left_join(simple_codes)
 
 # find the IDs where people we're working (more than 120min)
@@ -107,35 +107,45 @@ work.age <- atussum_2018 %>%
 work.age.weighted <- work.age %>% 
   filter(Code == '05') %>% 
   group_by(TUCASEID) %>% 
-  mutate(work.status = sum(weighted.minutes) > 120) %>%
+  mutate(work.status = sum(time) > 120) %>%
   select(TUCASEID, work.status) %>%
   distinct() %>% 
   right_join(work.age) %>% 
-  group_by(Code, Description, TEAGE, work.status) %>% 
+  mutate(weighted.minutes = TUFINLWGT * time) %>% 
+  group_by(activity, TEAGE, work.status) %>% 
   summarize(weighted.minutes = sum(weighted.minutes) / sum(TUFINLWGT)) %>% 
   ungroup()
+
+# add the field description
+work.age.weighted <- work.age.weighted %>% 
+  mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>% 
+  left_join(simple_codes)
 
 # facet plots of all the activities by age split by working status
 work.age.weighted %>% 
   filter(Code != '50',
          Code != '05') %>% 
-  group_by(TEAGE, Description, work.status) %>% 
-  summarize(weighted.minutes = sum(weighted.minutes),
-            weighted.hours = sum(weighted.minutes)/60) %>% 
-  ggplot(aes(x = TEAGE, y = weighted.hours, group = work.status, color = work.status)) +
+  group_by(TEAGE, Description, work.status) %>%
+  summarize(weighted.minutes = sum(weighted.minutes)) %>% 
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = work.status, color = work.status)) +
+  geom_point(alpha = 0.1) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
               se = FALSE, 
               linetype = 'dashed') +
-  geom_point(alpha = 0.2) +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   scale_color_manual(values = c('#c2886d', blog.color), label = c('Work day', 'Not a work day')) +
   facet_wrap(~Description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by age and working status",
        subtitle = "2018 American Time Use Survey",
+       caption = 'Work day defined as working two or more hours',
        x = "Age",
-       y = 'Average hours per day') +
+       y = 'Average hours:minutes per day') +
   theme(strip.text = element_text(size = 6),
         legend.position = 'bottom',
-        legend.title = element_blank())
+        legend.title = element_blank(),
+        plot.caption = element_text(face = "italic",
+                                    size = 5,
+                                    color = 'grey50'))
 
 ggsave(filename = "Plots/Activities_by_age_work.svg",
        plot = last_plot(),

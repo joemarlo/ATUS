@@ -8,6 +8,7 @@ Analysis of American Time Use Survey
 - [x] Summarize of activities by age
 - [x] Summarize of activities by age and working status
 - [ ] Double check specific activities are categorized correctly (e.g. travel should not include commuting)
+- [ ] Pull out sleep from Personal Care
 - [ ] Explore trends by income
 
 <br>
