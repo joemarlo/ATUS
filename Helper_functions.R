@@ -34,5 +34,39 @@ theme_custom <- function() {
 
 theme_set(theme_custom())
 
+
+# survey weighing function ------------------------------------------------
+
+weigh_it <- function(df, groups, activities = NULL){
+  # function takes the inputs, calculates the weights based on the observations
+  #  and the groups then returns the weighted data
+  # if activities is not provided then all t* columsn are used
+  
+  if (!all(c("TUCASEID", "TUFINLWGT") %in% names(df))) {
+    stop("data must contain variables named TUCASEID and TUFINLWGT")
+  }
+  
+  if (is.null(activities)) activities <- str_subset(names(df), '^t[0-9]')
+  
+  df %>% 
+    select(TUCASEID, TUFINLWGT, groups, activities) %>%
+    pivot_longer(cols = -c('TUCASEID', 'TUFINLWGT', groups),
+                 names_to = "activity",
+                 values_to = 'time') %>%
+    group_by_at(vars(activity, groups)) %>% 
+    summarize(weighted.minutes = sum(TUFINLWGT * time) / sum(TUFINLWGT)) %>%
+    ungroup()
+}
+
+# tmp <- weigh_it(df = atussum_2018, groups = 'TEAGE', activities = c('t120303', 't120304'))
+# tmp2 <- weigh_it(df = atussum_2018, groups = 'TEAGE', activities = c('t120303', 't120304'))
+# 
+# weigh_it(df = atussum_2018, groups = 'TEAGE') %>% 
+#   group_by(TEAGE) %>% 
+#   summarize(sum = sum(weighted.minutes)) 
+
+
 # default green color code for blog
 blog.color <- '#2b7551'
+
+

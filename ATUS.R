@@ -16,50 +16,134 @@ rm(files, dat.files)
 # import field labels -------------------------------------------------------------
 # also see: https://www.bls.gov/tus/lexiconwex2018.pdf
 
-specific_codes <- read_delim("Data/specific_codes.csv", 
+specific.codes <- read_delim("Data/specific_codes.csv", 
                              "+", escape_double = FALSE, trim_ws = TRUE)
 
-simple_codes <- read_delim("Data/simple_codes.csv", 
-                             "+", escape_double = FALSE, trim_ws = TRUE)
+simple.codes <- read_delim("Data/simple_codes.csv", 
+                           "+", escape_double = FALSE, trim_ws = TRUE)
 
+curated.codes <- tribble(
+  ~activity, ~description,
+  't0101.*',  'Sleep',
+  't0102.*',  'Personal Care',
+  't02.*',    'Household Activities',
+  't03.*',    'Caring For Household Member',
+  't04.*',    'Caring For Nonhousehold Members',
+  't05.*',    'Work',
+  't06.*',    'Education',
+  't07.*',    'Consumer Purchases',
+  't08.*',    'Professional & Personal Care Services',
+  't09.*',    'Household Services',
+  't10.*',    'Government Services & Civic Obligations',
+  't11.*',    'Eating and Drinking',
+  't12.*',    'Socializing, Relaxing, and Leisure',
+  't13.*',    'Sports, Exercise, and Recreation',
+  't14.*',    'Religious and Spiritual Activities',
+  't15.*',    'Volunteer Activities',
+  't16.*',    'Telephone Calls',
+  't18.*',    'Traveling',
+  't50.*',    'Data Codes'
+)
 
 # EDA ---------------------------------------------------------------------
 
-# weighted values by age
-age.weighted <- atussum_2018 %>% 
-  select(TUCASEID,
-         TUFINLWGT,
-         TEAGE,
-         matches('^t[0-9]')) %>% 
-  pivot_longer(cols = -c('TUCASEID', 'TUFINLWGT', 'TEAGE'),
-               names_to = "activity",
-               values_to = 'time') %>% 
-  mutate(weighted.minutes = TUFINLWGT * time) %>% 
-  group_by(activity, TEAGE) %>% 
-  summarize(weighted.minutes = sum(weighted.minutes) / sum(TUFINLWGT)) %>% 
-  ungroup()
-  
-# scatter plot of watching tv by age
-age.weighted %>% 
-  filter(activity %in% c('t120303', 't120304')) %>% #watching TV
-  group_by(TEAGE) %>% 
+# weigh_it(df = atussum_2018, groups = 'TEAGE', activities = c('t120303', 't120304'))
+# weigh_it(df = atussum_2018, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304'))   
+
+# scatter plot of watching tv by age and sex
+weigh_it(df = atussum_2018, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304')) %>% 
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  group_by(TEAGE, TESEX) %>% 
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
   mutate(weighted.hours = weighted.minutes/60) %>% 
-  ggplot(aes(x = TEAGE, y = weighted.hours)) +
+  ggplot(aes(x = TEAGE, y = weighted.hours, group = TESEX, color = TESEX)) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 3),
               se = FALSE, 
-              color = 'grey70',
               linetype = 'dashed') +
-  geom_point(alpha = 0.8) +
+  geom_point(alpha = 0.6) +
   labs(title = "Average time watching television by age",
        subtitle = "2018 American Time Use Survey",
        x = "Age",
-       y = 'Average hours per day')
+       y = 'Average hours per day') +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom')
+
+
+# adding simple codes -----------------------------------------------------
+
+# facet plots of all the activities by age and gender
+weigh_it(df = atussum_2018, groups = c('TEAGE', 'TESEX')) %>% 
+  fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
+  filter(activity.y != 't50.*') %>% 
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  group_by(TEAGE, TESEX, description) %>% 
+  summarize(weighted.minutes = sum(weighted.minutes)) %>%
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = TESEX, color = TESEX)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
+              se = FALSE, 
+              # color = blog.color,
+              linetype = 'dashed') +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  facet_wrap(~description, scales = 'free_y', ncol = 4) +
+  labs(title = "Average daily time spent on activity by age",
+       subtitle = "2018 American Time Use Survey",
+       x = "Age",
+       y = 'Average hours:minutes per day') +
+  theme(strip.text = element_text(size = 6)) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom')
+
+
+# add indicator for work day ----------------------------------------------
+
+# add indicator for work day
+sum.2018 <- atussum_2018 %>% 
+  select(contains('t05')) %>% 
+  rowSums() %>% 
+  enframe() %>% 
+  mutate(work.status = value >= 120) %>% 
+  select(work.status) %>% 
+  bind_cols(atussum_2018)
+
+# facet plots of all the activities by age and gender
+weigh_it(df = sum.2018, groups = c('TEAGE', 'TESEX', 'work.status')) %>% 
+  # match based on regex code in curated.codes
+  fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
+  # remove data code
+  filter(activity.y != 't50.*') %>% 
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
+         work.status = recode(as.character(work.status), 'TRUE' = 'Work day', 'FALSE' = 'Not a work day')) %>% 
+  mutate(Group = paste0(work.status, ' - ', TESEX)) %>% 
+  group_by(TEAGE, Group, description) %>%
+  summarize(weighted.minutes = sum(weighted.minutes)) %>% 
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = Group, color = Group)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
+              se = FALSE, 
+              linetype = 'dashed') +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  scale_color_manual(values = c('darkolivegreen4', 'darkolivegreen2','coral4', 'coral2')) +
+  facet_wrap(~description, scales = 'free_y', ncol = 3) +
+  labs(title = "Average daily time spent on activity by age and working status",
+       subtitle = "2018 American Time Use Survey",
+       caption = 'Work day defined as working two or more hours',
+       x = "Age",
+       y = 'Average hours:minutes per day') +
+  theme(strip.text = element_text(size = 6),
+        legend.position = 'bottom',
+        legend.title = element_blank(),
+        plot.caption = element_text(face = "italic",
+                                    size = 5,
+                                    color = 'grey50'))
+
+
+# EDA 2 -------------------------------------------------------------------
 
 # add the field description
 age.weighted <- age.weighted %>% 
   mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>% 
-  left_join(simple_codes)
+  left_join(simple.codes)
 
 # facet plots of all the activities by age
 age.weighted %>% 
@@ -79,13 +163,13 @@ age.weighted %>%
        x = "Age",
        y = 'Average hours:minutes per day') +
   theme(strip.text = element_text(size = 6))
-  
+
 ggsave(filename = "Plots/Activities_by_age.svg",
        plot = last_plot(),
        device = "svg",
        width = 9,
        height = 11)
-  
+
 
 # split by working status -------------------------------------------------
 
@@ -99,7 +183,7 @@ work.age <- atussum_2018 %>%
                names_to = "activity",
                values_to = 'time') %>% 
   mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>%
-  left_join(simple_codes)
+  left_join(simple.codes)
 
 # find the IDs where people we're working (more than 120min)
 #  then join  back to work.age then summarize the activities
@@ -119,7 +203,7 @@ work.age.weighted <- work.age %>%
 # add the field description
 work.age.weighted <- work.age.weighted %>% 
   mutate(Code = str_extract(activity, '^*[0-9][0-9]')) %>% 
-  left_join(simple_codes)
+  left_join(simple.codes)
 
 # facet plots of all the activities by age split by working status
 work.age.weighted %>% 
@@ -132,7 +216,7 @@ work.age.weighted %>%
               se = FALSE, 
               linetype = 'dashed') +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
-  scale_color_manual(values = c('#c2886d', blog.color), label = c('Leisure day', 'Work day')) +
+  scale_color_manual(values = c(blog.color, '#c2886d'), label = c('Leisure day', 'Work day')) +
   facet_wrap(~Description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by age and working status",
        subtitle = "2018 American Time Use Survey",
@@ -189,4 +273,4 @@ animate(work.gif,
         fps = 24,
         duration = 7)
 anim_save(filename = "Plots/work.gif")
-          
+
