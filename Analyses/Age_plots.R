@@ -1,49 +1,7 @@
 library(tidyverse)
 library(gganimate)
-source('Helper_functions.R')
+source('Analyses/Helper_functions.R')
 
-# import all the files ----------------------------------------------------
-# download data here: https://www.bls.gov/tus/datafiles-2018.htm
-#  and store in Inputs/ATUS-2018
-
-dat.files <- list.files('Inputs/ATUS-2018', '*.dat')
-files <- lapply(dat.files, function(file) read_csv(paste0("Inputs/ATUS-2018/", file)))
-names(files) <- str_remove(dat.files, ".dat")
-list2env(files, envir = .GlobalEnv)
-rm(files, dat.files)
-
-
-# import field labels -------------------------------------------------------------
-# also see: https://www.bls.gov/tus/lexiconwex2018.pdf
-
-specific.codes <- read_delim("Data/specific_codes.csv", 
-                             "+", escape_double = FALSE, trim_ws = TRUE)
-
-simple.codes <- read_delim("Data/simple_codes.csv", 
-                           "+", escape_double = FALSE, trim_ws = TRUE)
-
-curated.codes <- tribble(
-  ~activity, ~description,
-  't0101.*',  'Sleep',
-  't0102.*',  'Personal Care',
-  't02.*',    'Household Activities',
-  't03.*',    'Caring For Household Member',
-  't04.*',    'Caring For Nonhousehold Members',
-  't05.*',    'Work',
-  't06.*',    'Education',
-  't07.*',    'Consumer Purchases',
-  't08.*',    'Professional & Personal Care Services',
-  't09.*',    'Household Services',
-  't10.*',    'Government Services & Civic Obligations',
-  't11.*',    'Eating and Drinking',
-  't12.*',    'Socializing, Relaxing, and Leisure',
-  't13.*',    'Sports, Exercise, and Recreation',
-  't14.*',    'Religious and Spiritual Activities',
-  't15.*',    'Volunteer Activities',
-  't16.*',    'Telephone Calls',
-  't18.*',    'Traveling',
-  't50.*',    'Data Codes'
-)
 
 # EDA ---------------------------------------------------------------------
 
@@ -136,17 +94,8 @@ ggsave(filename = "Plots/Activities_by_age_sex.svg",
 
 # add indicator for work day ----------------------------------------------
 
-# add indicator for work day
-sum.2018 <- atussum_2018 %>% 
-  select(contains('t05')) %>% 
-  rowSums() %>% 
-  enframe() %>% 
-  mutate(work.status = value >= 120) %>% 
-  select(work.status) %>% 
-  bind_cols(atussum_2018)
-
 # facet plots of all the activities by age
-weigh_it(df = sum.2018, groups = c('TEAGE', 'work.status')) %>% 
+weigh_it(df = atussum_2018, groups = c('TEAGE', 'work.status')) %>% 
   # match based on regex code in curated.codes
   fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
   # remove data code
@@ -182,7 +131,7 @@ ggsave(filename = "Plots/Activities_by_age_work.svg",
 
 
 # facet plots of all the activities by age and gender for work only days
-weigh_it(df = sum.2018, groups = c('TEAGE', 'TESEX', 'work.status')) %>% 
+weigh_it(df = atussum_2018, groups = c('TEAGE', 'TESEX', 'work.status')) %>% 
   # match based on regex code in curated.codes
   fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
   # remove data code
@@ -218,11 +167,10 @@ ggsave(filename = "Plots/Activities_by_age_sex_workonly.svg",
        height = 11)
 
 
-
 # gif ---------------------------------------------------------------------
 
 # facet plots of all the activities by age split by working status
-work.gif <- weigh_it(df = sum.2018, groups = c('TEAGE', 'work.status')) %>% 
+work.gif <- weigh_it(df = atussum_2018, groups = c('TEAGE', 'work.status')) %>% 
   # match based on regex code in curated.codes
   fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
   filter(activity.y != '50') %>%  # exclude generic data code
