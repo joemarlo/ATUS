@@ -26,6 +26,7 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 <img src="Plots/TV_by_age_sex.svg" width=79%>
 </p>
 
+<!--
 <p align="center">
 <img src="Plots/Activities_by_age.svg" width=79%>
 </p>
@@ -37,14 +38,17 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 <p align="center">
 <img src="Plots/Activities_by_age_sex_workonly.svg" width=79%>
 </p>
+-->
 
 <p align="center">
 <img src="Plots/Activities_by_age_work.svg" width=79%>
 </p>
 
+<!--
 <p align="center">
 <img src="Plots/work.gif" width=79%>
 </p>
+-->
 
 <p align="center">
 <img src="Plots/Activities_by_age_income.svg" width=79%>

@@ -81,7 +81,7 @@ curated.codes <- tribble(
 
 # survey weighing function ------------------------------------------------
 
-weigh_it <- function(df, groups, activities = NULL){
+apply_weights <- function(df, groups, activities = NULL){
   # function takes the inputs, calculates the weights based on the observations
   #  and the groups then returns the weighted data
   # if activities is not provided then all t* columsn are used

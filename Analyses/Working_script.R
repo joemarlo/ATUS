@@ -4,11 +4,11 @@ source('Analyses/Helper_functions.R')
 
 # EDA ---------------------------------------------------------------------
 
-weigh_it(df = atussum_2018, groups = 'TEAGE', activities = c('t120303', 't120304'))
-weigh_it(df = atussum_2018, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304'))
-weigh_it(df = atussum_2018, groups = 'TESEX', activities = c('t120303', 't120304'))
+apply_weights(df = atussum_2018, groups = 'TEAGE', activities = c('t120303', 't120304'))
+apply_weights(df = atussum_2018, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304'))
+apply_weights(df = atussum_2018, groups = 'TESEX', activities = c('t120303', 't120304'))
 
-weigh_it(df = atussum_2018, groups = 'TESEX') %>% 
+apply_weights(df = atussum_2018, groups = 'TESEX') %>% 
   fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
   filter(activity.y != 't50.*') %>% 
   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>%
@@ -54,7 +54,7 @@ income.levels <- tribble(~HEFAMINC, ~HH.income,
 atussum_2018 %>% 
   left_join(distinct(atuscps_2018[, c('TUCASEID', 'HEFAMINC')])) %>%
   left_join(income.levels) %>% 
-  weigh_it(df = ., groups = c('HH.income')) %>% 
+  apply_weights(df = ., groups = c('HH.income')) %>% 
   fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
   filter(activity.y != 't50.*') %>% 
   group_by(HH.income, description) %>% 
@@ -86,7 +86,7 @@ atussum_2018 %>%
                           breaks = seq(0, 150000, by = 50000), 
                           include.lowest = TRUE, ordered_result = TRUE),
          HH.inc.cut = factor(HH.inc.cut, levels = levels(HH.inc.cut))) %>% 
-  weigh_it(df = ., groups = c('HH.inc.cut', 'TEAGE', 'work.status')) %>% 
+  apply_weights(df = ., groups = c('HH.inc.cut', 'TEAGE', 'work.status')) %>% 
   fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
   filter(activity.y != 't50.*',
          work.status == TRUE) %>% 
@@ -100,7 +100,7 @@ atussum_2018 %>%
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   scale_color_manual(values = c('darkgreen', 'firebrick3','royalblue3'),
                      labels = c( '$0-50k', '$50-100k', '$100-150k')) +
-  facet_wrap(~description, scales = 'free_y', ncol = 3) +
+  facet_wrap(~description, scales = 'free_y', ncol = 2) +
   labs(title = "Average daily time spent on activity by household income",
        subtitle = "2018 American Time Use Survey",
        caption = 'Work day defined as working two or more hours',
@@ -114,7 +114,7 @@ ggsave(filename = "Plots/Activities_by_age_income.svg",
        plot = last_plot(),
        device = "svg",
        width = 9,
-       height = 11)
+       height = 17)
 
 
 # games -------------------------------------------------------------------
