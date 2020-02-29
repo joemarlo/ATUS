@@ -12,6 +12,13 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 - [ ] Explore trends by income
   - What activities are more indicative of income
   - Do higher income people work more or less
+- [ ] Explore ... over the multi years
+  - Waiting associated with working / Waiting associated with work-related activities
+  - Work, other job(s)
+  - Security related to attending sporting events
+- [ ] Explore sports by wealth
+  - 130101:130199
+
 
 <br>
 

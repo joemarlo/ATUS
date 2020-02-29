@@ -99,7 +99,7 @@ atussum_2018 %>%
               linetype = 'longdash') +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   scale_color_manual(values = c('darkgreen', 'firebrick3','royalblue3'),
-                     labels = c( '$0-50k', '$50k-100', '$100k-150')) +
+                     labels = c( '$0-50k', '$50-100k', '$100-150k')) +
   facet_wrap(~description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by household income",
        subtitle = "2018 American Time Use Survey",
@@ -115,4 +115,8 @@ ggsave(filename = "Plots/Activities_by_age_income.svg",
        device = "svg",
        width = 9,
        height = 11)
+
+
+# games -------------------------------------------------------------------
+
 
