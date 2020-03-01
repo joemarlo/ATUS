@@ -1,17 +1,19 @@
 # ATUS
 Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 
+<br>
 
 ## To-do list
 
-#### Data search and programming
+### Data search and programming
 - [x] Find the right data
-- [X] Consolidate similar features
+- [x] Consolidate similar features
+- [x] Build generic function to apply proper weights to inputed groupings
 - [ ] Double check specific activities are categorized correctly (e.g. travel should not include commuting)
 - [x] Pull out sleep from Personal Care
 - [x] Integrate multi-year data
 
-#### Trend explorations
+### Trend explorations
 - [x] Summarize of activities by age
 - [x] Summarize of activities by age and working status
 - [ ] What activities are more indicative of income
@@ -26,12 +28,12 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 - [x] Leisure by region
 - [x] Computer use
 
-#### Markov chain simulation
+### Markov chain simulation
 - [ ] Build matrix of probabilities
-
 
 <br>
 
+## Initial plots
 
 <p align="center">
 <img src="Plots/TV_by_age_sex.svg" width=79%>
