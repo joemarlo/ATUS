@@ -16,12 +16,13 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 - [ ] Explore ... over the multi years
   - Waiting associated with working / Waiting associated with work-related activities
   - Work, other job(s)
-  - Eating out by income
-  - Houseplants 020501
 - [x] Rank sports by income
-  - 130101:130199
 - [x] Waiting by income
 - [x] Security related to attending sporting events / Security procedures rel. to arts & entertainment
+- [x] Houseplants
+- [x] Time spent job searching
+- [x] Leisure by region
+- [x] Computer use
 
 
 <br>

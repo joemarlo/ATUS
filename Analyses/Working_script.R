@@ -161,7 +161,7 @@ wait.codes <- names(atussum_0318)[names(atussum_0318) %in% wait.codes]
 # average wait time by income
 atussum_0318 %>% 
   select(TUFNWGTP, TUCASEID, wait.codes) %>% 
-  left_join(distinct(atuscps_2018[, c('TUCASEID', 'HEFAMINC')])) %>%
+  left_join(distinct(atuscps_0318[, c('TUCASEID', 'HEFAMINC')])) %>%
   filter(HEFAMINC != -1) %>% 
   # re bucket incomes into five
   mutate(HEFAMINC = case_when(
@@ -200,7 +200,7 @@ atussum_0318 %>%
                     (seq(0,1, length.out = 5)),
                     labels = c('$0-25k', '$25-50k', '$50-100k', '$100-150k', '$150k+')) +
   coord_flip() +
-  labs(title = 'Time spent waiting for...',
+  labs(title = 'Time spent waiting for or associated with...',
        subtitle = 'Grouped by household income',
        x = NULL,
        y = 'Proportion of minutes waited',

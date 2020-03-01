@@ -95,8 +95,8 @@ curated.codes <- tribble(
 # survey weighing function ------------------------------------------------
 
 apply_weights <- function(df, groups, activities = NULL){
-  # function takes the inputs, calculates the weights based on the observations
-  #  and the groups then returns the weighted data
+  # function takes the inputs, calculates the weights, groups
+  #   then returns the weighted data
   # if activities is not provided then all t* columsn are used
   
   if (!all("TUCASEID" %in% names(df) & any(c('TUFINLWGT', 'TUFNWGTP') %in% names(df)))) {
@@ -106,8 +106,11 @@ apply_weights <- function(df, groups, activities = NULL){
   # select the correct weighting variable based on the data provided
   weight.var <- c('TUFNWGTP', 'TUFINLWGT')[c('TUFNWGTP', 'TUFINLWGT') %in% names(df)]
   
-  # if no activities are provided then include all of them
-  if (is.null(activities)) activities <- str_subset(names(df), '^t[0-9]')
+  # if no activities are explicitly provided then include all of them
+  if (is.null(activities)){
+    activities <- str_subset(names(df), '^t[0-9]')
+    message('No activities explicitly provided. Returning all activities.')
+  }
   
   df %>% 
     select(TUCASEID, weight.var, groups, activities) %>%
@@ -163,6 +166,22 @@ income.levels <- tribble(~HEFAMINC, ~HH.income,
                          15, 100000,
                          16, 150000
 )
+
+
+
+# FIPS state codes --------------------------------------------------------
+
+# scrap FIPS state codes
+FIPS <- xml2::read_html('https://www.nrcs.usda.gov/wps/portal/nrcs/detail/?cid=nrcs143_013696') %>% 
+  rvest::html_nodes(xpath = '//table[contains(@class, "data")]') %>% 
+  rvest::html_table() %>% 
+  .[[1]] %>% 
+  rename(State = 'Postal Code')
+
+
+# state regions -----------------------------------------------------------
+
+state.regions <- read_csv('Data/state_regions.csv')
 
 
 # Other -------------------------------------------------------------------
