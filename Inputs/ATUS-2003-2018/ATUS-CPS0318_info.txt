@@ -1,0 +1,14 @@
+
+The data file atuscps_0318.dat (2003-18 ATUS-CPS file) contains 243 variables and 1,139,877 observations.  
+
+For more information about this file, see the 2003-18 ATUS-CPS Data Dictionary, available online at:  https://www.bls.gov/tus/atuscpscodebk0318.pdf.
+
+In addition to the data file, three computer programs are contained in atuscps_0318.zip.  If you have SPSS, SAS, or Stata software, you may use these programs to read the data into your statistical software package.  The programs include variable and value labels for most variables.  For information about unlabeled values, please refer to the data dictionary.
+
+The file "atuscps_0318.sps" reads the data into SPSS.
+
+The file "atuscps_0318.sas" reads the data into SAS.
+
+The file "atuscps_0318.do" reads the data into Stata. 
+
+If you have SAS, SPSS, or Stata software, open the corresponding program, edit the infile (in SAS), file (in SPSS), or import (in Stata) statement to reference the data file on your computer, and run the program. 

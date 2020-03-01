@@ -28,23 +28,36 @@ theme_custom <- function() {
                                 face = "bold"),
       plot.subtitle = element_text(size = 10,
                                    color = "gray30"),
-      text = element_text(family = "Helvetica")
+      text = element_text(family = "Helvetica"),
+      plot.caption = element_text(face = "italic",
+                                  size = 6,
+                                  color = 'grey50')
     )
 }
 
 theme_set(theme_custom())
 
 
-# import all the files ----------------------------------------------------
+# import 2018 files ----------------------------------------------------
 # download data here: https://www.bls.gov/tus/datafiles-2018.htm
 #  and store in Inputs/ATUS-2018
 
-dat.files <- list.files('Inputs/ATUS-2018', '*.dat')
-files <- lapply(dat.files, function(file) read_csv(paste0("Inputs/ATUS-2018/", file)))
+# dat.files <- list.files('Inputs/ATUS-2018', '*.dat')
+# files <- lapply(dat.files, function(file) read_csv(paste0("Inputs/ATUS-2018/", file)))
+# names(files) <- str_remove(dat.files, ".dat")
+# list2env(files, envir = .GlobalEnv)
+# rm(files, dat.files)
+
+
+# import 2003-2018 files ----------------------------------------------------
+# download data here: https://www.bls.gov/tus/datafiles-2018.htm
+#  and store in Inputs/ATUS-2018
+
+dat.files <- list.files('Inputs/ATUS-2003-2018', '*.dat')
+files <- lapply(dat.files, function(file) read_csv(paste0("Inputs/ATUS-2003-2018/", file)))
 names(files) <- str_remove(dat.files, ".dat")
 list2env(files, envir = .GlobalEnv)
 rm(files, dat.files)
-
 
 # import field labels -------------------------------------------------------------
 # also see: https://www.bls.gov/tus/lexiconwex2018.pdf
@@ -86,19 +99,23 @@ apply_weights <- function(df, groups, activities = NULL){
   #  and the groups then returns the weighted data
   # if activities is not provided then all t* columsn are used
   
-  if (!all(c("TUCASEID", "TUFINLWGT") %in% names(df))) {
-    stop("data must contain variables named TUCASEID and TUFINLWGT")
+  if (!all("TUCASEID" %in% names(df) & any(c('TUFINLWGT', 'TUFNWGTP') %in% names(df)))) {
+    stop("data must contain variables named TUCASEID and (TUFINLWGT or TUFNWGTP)")
   }
   
+  # select the correct weighting variable based on the data provided
+  weight.var <- c('TUFNWGTP', 'TUFINLWGT')[c('TUFNWGTP', 'TUFINLWGT') %in% names(df)]
+  
+  # if no activities are provided then include all of them
   if (is.null(activities)) activities <- str_subset(names(df), '^t[0-9]')
   
   df %>% 
-    select(TUCASEID, TUFINLWGT, groups, activities) %>%
-    pivot_longer(cols = -c('TUCASEID', 'TUFINLWGT', groups),
+    select(TUCASEID, weight.var, groups, activities) %>%
+    pivot_longer(cols = -c('TUCASEID', weight.var, groups),
                  names_to = "activity",
                  values_to = 'time') %>%
     group_by_at(vars(activity, groups)) %>% 
-    summarize(weighted.minutes = sum(TUFINLWGT * time) / sum(TUFINLWGT)) %>%
+    summarize(weighted.minutes = sum(.data[[weight.var]] * time) / sum(.data[[weight.var]])) %>%
     ungroup()
 }
 
@@ -106,13 +123,46 @@ apply_weights <- function(df, groups, activities = NULL){
 # additions to data -------------------------------------------------------
 
 # add indicator for work day to 2018 summary file
-atussum_2018 <- atussum_2018 %>% 
+# atussum_2018 <- atussum_2018 %>% 
+#   select(contains('t05')) %>% 
+#   rowSums() %>% 
+#   enframe() %>% 
+#   mutate(work.status = value >= 120) %>% 
+#   select(work.status) %>% 
+#   bind_cols(atussum_2018)
+
+# add indicator for work day to 2003-2018 summary file
+atussum_0318 <- atussum_0318 %>% 
   select(contains('t05')) %>% 
   rowSums() %>% 
   enframe() %>% 
   mutate(work.status = value >= 120) %>% 
   select(work.status) %>% 
-  bind_cols(atussum_2018)
+  bind_cols(atussum_0318)
+
+
+# income ------------------------------------------------------------------
+
+# family income CPS data is HEFAMINC
+
+income.levels <- tribble(~HEFAMINC, ~HH.income,
+                         1, 0,
+                         2, 5000,
+                         3, 7500,
+                         4, 10000,
+                         5, 12500,
+                         6, 15000,
+                         7, 20000,
+                         8, 25000,
+                         9, 30000,
+                         10, 35000,
+                         11, 40000,
+                         12, 50000,
+                         13, 60000,
+                         14, 75000,
+                         15, 100000,
+                         16, 150000
+)
 
 
 # Other -------------------------------------------------------------------

@@ -4,4 +4,5 @@
 .Ruserdata
 
 Inputs/ATUS-2018/*.dat
+Inputs/ATUS-2003-2018/*.dat
 .DS_Store
