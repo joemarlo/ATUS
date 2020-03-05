@@ -3,24 +3,39 @@ library(gganimate)
 library(maps)
 source('Analyses/Helper_functions.R')
 
+# summary table -----------------------------------------------------------
+
+# summary table of activities by sex; this takes a few minutes
+get_min_per_part(df = atussum_0318, groups = c('TESEX'), simplify = TRUE) %>% 
+  # match based on regex code in curated.codes
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
+         weighted.hours = round(weighted.minutes / 60, 2),
+         participation.rate = round(participation.rate, 4),
+         hours.per.participant = round(minutes.per.participant/ 60, 2)) %>% 
+  select(-weighted.minutes, -minutes.per.participant ) %>% 
+  View('2003-2018 summary')
+
+
+# panel plots -------------------------------------------------------------
 
 # scatter plot of watching tv by age and sex
 apply_weights(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304')) %>% 
   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
   group_by(TEAGE, TESEX) %>% 
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
-  mutate(weighted.hours = weighted.minutes/60) %>% 
-  ggplot(aes(x = TEAGE, y = weighted.hours, group = TESEX, color = TESEX)) +
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = TESEX, color = TESEX)) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 3),
               se = FALSE, 
               linetype = 'dashed') +
   geom_point(alpha = 0.6) +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   labs(title = "Average time watching television by age",
        caption = "2003-2018 American Time Use Survey",
        x = "Age",
-       y = 'Average hours per day') +
+       y = 'Average hours:minutes per day') +
   theme(legend.title = element_blank(),
-        legend.position = 'bottom')
+        legend.position = 'bottom',
+        legend.key = element_rect(fill = NA))
 
 ggsave(filename = "Plots/TV_by_age_sex.svg",
        plot = last_plot(),
@@ -31,9 +46,9 @@ ggsave(filename = "Plots/TV_by_age_sex.svg",
 # facet plots of all the activities by age
 apply_weights(df = atussum_0318, groups = c('TEAGE', 'work.status')) %>% 
   # match based on regex code in curated.codes
-  fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
+  fuzzyjoin::regex_left_join(x = ., y = curated.codes.2, by = c(activity = 'activity')) %>%
   # remove data code
-  filter(activity.y != 't50.*') %>% 
+  # filter(activity.y != 't50.*') %>% 
   mutate(work.status = recode(as.character(work.status), 'TRUE' = 'Work day', 'FALSE' = 'Leisure day')) %>% 
   group_by(TEAGE, work.status, description) %>%
   summarize(weighted.minutes = sum(weighted.minutes)) %>% 
@@ -44,13 +59,13 @@ apply_weights(df = atussum_0318, groups = c('TEAGE', 'work.status')) %>%
               linetype = 'dashed') +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   scale_color_manual(values = c(blog.color, 'coral3')) +
-  facet_wrap(~description, scales = 'free_y', ncol = 2) +
+  facet_wrap(~description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by age and working status",
        subtitle = "2003-2018 American Time Use Survey",
        caption = 'Work day defined as working two or more hours',
        x = "Age",
        y = 'Average hours:minutes per day') +
-  theme(strip.text = element_text(size = 6),
+  theme(strip.text = element_text(size = 8),
         legend.position = 'bottom',
         legend.title = element_blank())
 
@@ -74,7 +89,7 @@ sec.codes <- names(atussum_0318)[names(atussum_0318) %in% sec.codes]
 # average minutes in security
 atussum_0318 %>% 
   select(TUFNWGTP, TUCASEID, sec.codes, TUYEAR) %>% 
-  apply_weights(df = ., groups = 'TUYEAR') %>% 
+  apply_weights(df = ., groups = 'TUYEAR', participants.only = TRUE) %>% 
   group_by(TUYEAR) %>% 
   summarize(total.sec = sum(weighted.minutes)) %>% 
   ggplot(aes(x = TUYEAR, y = total.sec)) +
@@ -84,11 +99,10 @@ atussum_0318 %>%
               color = blog.color,
               linetype = 'dashed') +
   labs(title = 'Average weight times in security related activities',
+       caption = "2003-2018 American Time Use Survey",
        x = 'Year',
        y = 'Average minutes per day')
   
-
-
 # houseplants -------------------------------------------------------------
 
 plant.codes <- specific.codes %>%
@@ -191,8 +205,26 @@ leisure.codes <- specific.codes %>%
 
 leisure.codes <- names(atussum_0318)[names(atussum_0318) %in% leisure.codes]
 
-# map of states by leisure activity
-# still some issues with matching FIPS codes to states to geojson
+# leisure by age
+atussum_0318 %>% 
+  apply_weights(groups = c('TEAGE'), activities = leisure.codes) %>% 
+  group_by(TEAGE) %>% 
+  mutate(total.leisure = sum(weighted.minutes)) %>% 
+  ggplot(aes(x = TEAGE, y = total.leisure)) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 3),
+              se = FALSE,
+              color = blog.color,
+              linetype = 'dashed') +
+  geom_point(alpha = 0.6) +
+  labs(title = "Average time participating in leisure",
+       subtitle = 'Leisure as a primary activity',
+       caption = "2003-2018 American Time Use Survey",
+       x = "Age",
+       y = 'Average hours per day') +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom')
+
+# states by leisure activity
 leisure.by.state <- atussum_0318 %>% 
   left_join(distinct(atuscps_0318[, c('TUCASEID', 'GESTFIPS')])) %>% 
   apply_weights(df = ., groups = c('GESTFIPS'), activities = leisure.codes) %>% 
@@ -284,3 +316,5 @@ animate(job_search.gif,
         duration = 14)
 anim_save(filename = "Plots/job_search.gif")
 rm(job_search.gif)
+
+

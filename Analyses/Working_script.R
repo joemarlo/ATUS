@@ -22,7 +22,6 @@ apply_weights(df = atussum_0318, groups = 'TESEX') %>%
         legend.position = 'bottom')
   
 
-
 # income ------------------------------------------------------------------
 
 # plot of average minutes per day by activity and household income
@@ -109,24 +108,22 @@ atussum_0318 %>%
     HEFAMINC == 15 ~ 15,
     HEFAMINC == 16 ~ 16)) %>% 
   left_join(income.levels) %>% 
-  select(-TUCASEID, -HEFAMINC) %>% 
-  pivot_longer(cols = -c('TUFNWGTP', 'HH.income')) %>% 
-  group_by(name, HH.income) %>% 
-  summarize(part.rate = sum(TUFNWGTP * (value > 0)) / sum(TUFNWGTP)) %>% 
+  select(-HEFAMINC) %>% 
+  get_participation(groups = 'HH.income') %>% 
   # filter out low participation rate sports
-  group_by(name) %>% 
-  mutate(total.part.rate = sum(part.rate)) %>% 
+  group_by(activity) %>% 
+  mutate(total.part.rate = sum(participation.rate)) %>% 
   ungroup() %>% 
   filter(total.part.rate >= quantile(total.part.rate, .30)) %>% 
   left_join(specific.codes %>% mutate(Code = paste0('t', Code)), 
-            by = c('name' = 'Code')) %>% 
+            by = c('activity' = 'Code')) %>% 
   filter(!grepl('n\\.e\\.c', Description)) %>%
-  group_by(name) %>% 
-  mutate(part.rate = part.rate / sum(part.rate),
+  group_by(activity) %>% 
+  mutate(participation.rate = participation.rate / sum(participation.rate),
          # calculate income weighted by part.rate for sorting purposes
-         mean.inc = mean(HH.income * part.rate)) %>%
+         mean.inc = mean(HH.income * participation.rate)) %>%
   ungroup() %>%
-  ggplot(aes(x = reorder(Description, -mean.inc), y = part.rate, 
+  ggplot(aes(x = reorder(Description, -mean.inc), y = participation.rate, 
              group = rev(HH.income), fill = as.factor(HH.income))) +
   geom_col(position = 'stack', color = 'white') +
   scale_y_continuous(labels = NULL) +
@@ -213,3 +210,125 @@ ggsave(filename = "Plots/Waiting_by_income.svg",
        device = "svg",
        width = 9,
        height = 9)
+
+# participation rates in wait time by income, each one scaled to sum to 1
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, wait.codes) %>% 
+  left_join(distinct(atuscps_0318[, c('TUCASEID', 'HEFAMINC')])) %>%
+  filter(HEFAMINC != -1) %>% 
+  # re bucket incomes into five
+  mutate(HEFAMINC = case_when(
+    HEFAMINC %in% 1:7 ~ 1,
+    HEFAMINC %in% 8:11 ~ 8,
+    HEFAMINC %in% 12:14 ~ 12,
+    HEFAMINC == 15 ~ 15,
+    HEFAMINC == 16 ~ 16)) %>% 
+  left_join(income.levels) %>% 
+  select(-HEFAMINC) %>% 
+  get_participation(groups = 'HH.income') %>% 
+  group_by(activity) %>% 
+  mutate(total.part.rate = sum(participation.rate)) %>% 
+  ungroup() %>% 
+  filter(total.part.rate >= quantile(total.part.rate, .30)) %>% 
+  left_join(specific.codes %>% mutate(Code = paste0('t', Code)), 
+            by = c('activity' = 'Code')) %>% 
+  filter(!grepl('n\\.e\\.c', Description)) %>%
+  group_by(activity) %>% 
+  mutate(participation.rate = participation.rate / sum(participation.rate),
+         # calculate income weighted by part.rate for sorting purposes
+         mean.inc = mean(HH.income * participation.rate)) %>%
+  ungroup() %>%
+  # remove waiting text
+  mutate(Description = str_remove(Description, 'Waiting associated with '),
+         Description = str_remove(Description, 'Waiting associated w/'),
+         Description = str_remove(Description, 'Waiting assoc. w/'),
+         Description = str_remove(Description, 'Waiting related to '),
+         Description = str_remove(Description, 'Waiting for/'),
+         Description = str_to_sentence(Description)) %>% 
+  ggplot(aes(x = reorder(Description, -mean.inc), y = participation.rate, 
+             group = rev(HH.income), fill = as.factor(HH.income))) +
+  geom_col(position = 'stack', color = 'white') +
+  scale_y_continuous(labels = NULL) +
+  scale_fill_manual(values = scales::seq_gradient_pal(low = '#91ebc0', high = '#1d4f37')
+                    (seq(0,1, length.out = 5)),
+                    labels = c('$0-25k', '$25-50k', '$50-100k', '$100-150k', '$150k+')) +
+  coord_flip() +
+  labs(title = 'Time spent waiting for or associated with...',
+       subtitle = 'Grouped by household income',
+       x = NULL,
+       y = 'Proportion of participation',
+       caption = '2003-2018 American Time Use Survey') +
+  theme(legend.position = 'bottom',
+        legend.title = element_blank())
+
+
+# average wait time by income for those who participate
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, wait.codes) %>% 
+  left_join(distinct(atuscps_0318[, c('TUCASEID', 'HEFAMINC')])) %>%
+  filter(HEFAMINC != -1) %>% 
+  # re bucket incomes into five
+  mutate(HEFAMINC = case_when(
+    HEFAMINC %in% 1:7 ~ 1,
+    HEFAMINC %in% 8:11 ~ 8,
+    HEFAMINC %in% 12:14 ~ 12,
+    HEFAMINC == 15 ~ 15,
+    HEFAMINC == 16 ~ 16)) %>% 
+  left_join(income.levels) %>% 
+  select(-HEFAMINC) %>% 
+  get_min_per_part(groups = c('HH.income')) %>% 
+  left_join(specific.codes %>% mutate(Code = paste0('t', Code)), 
+            by = c('activity' = 'Code')) %>% 
+  # filter out low participation rate activties
+  group_by(activity) %>% 
+  mutate(total.min = sum(minutes.per.participant)) %>% 
+  ungroup() %>% 
+  filter(total.min >= quantile(total.min, .30, na.rm = TRUE)) %>% 
+  group_by(activity) %>% 
+  mutate(weighted.minutes = minutes.per.participant / sum(minutes.per.participant),
+         # calculate income weighted by minutes for sorting purposes
+         mean.inc = mean(HH.income * weighted.minutes)) %>%
+  ungroup() %>%
+  # remove waiting text
+  mutate(Description = str_remove(Description, 'Waiting associated with '),
+         Description = str_remove(Description, 'Waiting associated w/'),
+         Description = str_remove(Description, 'Waiting assoc. w/'),
+         Description = str_remove(Description, 'Waiting related to '),
+         Description = str_remove(Description, 'Waiting for/'),
+         Description = str_to_sentence(Description)) %>% 
+  ggplot(aes(x = reorder(Description, -mean.inc), y = weighted.minutes, 
+             group = rev(HH.income), fill = as.factor(HH.income))) +
+  geom_col(position = 'stack', color = 'white') +
+  scale_y_continuous(labels = NULL) +
+  scale_fill_manual(values = scales::seq_gradient_pal(low = '#91ebc0', high = '#1d4f37')
+                    (seq(0,1, length.out = 5)),
+                    labels = c('$0-25k', '$25-50k', '$50-100k', '$100-150k', '$150k+')) +
+  coord_flip() +
+  labs(title = 'Time spent waiting for or associated with...',
+       subtitle = 'For those that participated',
+       x = NULL,
+       y = 'Proportion of minutes waited',
+       caption = '2003-2018 American Time Use Survey') +
+  theme(legend.position = 'bottom',
+        legend.title = element_blank())
+
+
+
+# test that weighting function works --------------------------------------
+
+# weighted summary of top variables
+atussum_2018 %>%
+  apply_weights(groups = c('TESEX')) %>%
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>%
+  mutate(group = str_extract(activity, '^*[0-9][0-9]')) %>% 
+  group_by(group, TESEX) %>% 
+  summarize(weighted.hours = sum(weighted.minutes) / 60) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = TESEX, values_from = weighted.hours) %>% 
+  left_join(simple.codes, by = c(group = "Code")) %>% 
+  select(Description, Male, Female) %>%
+  head(-1) %>% 
+  knitr::kable(digits = 2)
+
+
+

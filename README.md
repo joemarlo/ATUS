@@ -12,6 +12,7 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 - [ ] Double check specific activities are categorized correctly (e.g. travel should not include commuting)
 - [x] Pull out sleep from Personal Care
 - [x] Integrate multi-year data
+- [ ] Consolidate trend code to a single .R file
 
 ### Trend explorations
 - [x] Summarize of activities by age
@@ -26,9 +27,11 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/)
 - [x] Houseplants
 - [x] Time spent job searching
 - [x] Leisure by region
+- [ ] Compare leisure with age (mean age per state)
 - [x] Computer use
 
 ### Markov chain simulation
+- [ ] Consolidate activities to core items
 - [ ] Build matrix of probabilities
 
 <br>
