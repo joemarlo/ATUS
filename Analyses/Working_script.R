@@ -74,7 +74,7 @@ atussum_0318 %>%
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   scale_color_manual(values = c('darkgreen', 'firebrick3','royalblue3'),
                      labels = c( '$0-50k', '$50-100k', '$100-150k')) +
-  facet_wrap(~description, scales = 'free_y', ncol = 2) +
+  facet_wrap(~description, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by household income during work days",
        subtitle = "2003-2018 American Time Use Survey",
        caption = 'Work day defined as working two or more hours',
