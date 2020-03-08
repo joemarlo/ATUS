@@ -33,7 +33,10 @@ theme_custom <- function() {
       text = element_text(family = "Helvetica"),
       plot.caption = element_text(face = "italic",
                                   size = 6,
-                                  color = 'grey50')
+                                  color = 'grey50'),
+      legend.title = element_blank(),
+      legend.position = 'bottom',
+      legend.key = element_rect(fill = NA)
     )
 }
 
@@ -74,24 +77,44 @@ simple.codes <- read_delim("Data/simple_codes.csv",
 # curated.codes <- tribble(
 #   ~activity, ~description,
 #   't0101.*',  'Sleep',
-#   't0102.*',  'Personal Care',
+#   't010[2-9].*','Personal Care',
+#   't019.*',   'Personal Care',
+#   't1801.*',  'Personal Care',
 #   't02.*',    'Household Activities',
+#   't1802.*',  'Household Activities',
 #   't03.*',    'Caring For Household Member',
+#   't1803.*',  'Caring For Household Member',
 #   't04.*',    'Caring For Nonhousehold Members',
+#   't1804.*',  'Caring For Nonhousehold Members',
 #   't05.*',    'Work',
+#   't1805.*',  'Work',
 #   't06.*',    'Education',
+#   't1806.*',  'Education',
 #   't07.*',    'Consumer Purchases',
+#   't1807.*',  'Consumer Purchases',
 #   't08.*',    'Professional & Personal Care Services',
+#   't1808.*',  'Professional & Personal Care Services',
 #   't09.*',    'Household Services',
+#   't1809.*',  'Household Services',
 #   't10.*',    'Government Services & Civic Obligations',
+#   't1810.*',  'Government Services & Civic Obligations',
 #   't11.*',    'Eating and Drinking',
+#   't1811.*',  'Eating and Drinking',
 #   't12.*',    'Socializing, Relaxing, and Leisure',
+#   't1812.*',  'Socializing, Relaxing, and Leisure',
 #   't13.*',    'Sports, Exercise, and Recreation',
+#   't1813.*',  'Sports, Exercise, and Recreation',
 #   't14.*',    'Religious and Spiritual Activities',
+#   't1814.*',  'Religious and Spiritual Activities',
 #   't15.*',    'Volunteer Activities',
+#   't1815.*',  'Volunteer Activities',
 #   't16.*',    'Telephone Calls',
+#   't1816.*',  'Telephone Calls',
 #   't18.*',    'Traveling',
-#   't50.*',    'Data Codes'
+#   't1818.*',  'Other',
+#   't1819.*',  'Other',
+#   't189.*',  'Other',
+#   't50.*',    'Other'
 # )
 
 curated.codes <- tribble(
@@ -136,6 +159,15 @@ curated.codes <- tribble(
   't50.*',    'Other'
 )
 
+# all codes matched to description
+descriptions <- atussum_0318 %>% 
+  select(matches('^t[0-9].')) %>% 
+  pivot_longer(cols = everything(), names_to = 'activity') %>%
+  select(activity) %>% 
+  distinct() %>% 
+  fuzzyjoin::regex_left_join(y = curated.codes) %>% 
+  select(activity = activity.x, description)
+
 
 # survey weighing function ------------------------------------------------
 
@@ -169,23 +201,39 @@ apply_weights <- function(df, groups, activities = NULL){
     ungroup()
 }
 
-get_minutes <- function(df, groups, activities = NULL, simplify = FALSE){
+get_minutes <- function(df, groups, activities = NULL, simplify = NULL){
   # function takes the inputs, calculates the weights, groups
   #   then returns the weighted minutes
   # if activities is not provided then all t* columsn are used
+  # if simplify = TRUE then activities will be grouped into one
+  # if simplify = data frame then activities will be grouped by the dataframe
+  #   data frame should contain columns 'activity' with the codes and 'description' representing group names
   
   if (!all("TUCASEID" %in% names(df) & any(c('TUFINLWGT', 'TUFNWGTP') %in% names(df)))) {
     stop("data must contain variables named TUCASEID and (TUFINLWGT or TUFNWGTP)")
   }
   
-  # select the correct weighting variable based on the data provided
-  weight.var <- c('TUFNWGTP', 'TUFINLWGT')[c('TUFNWGTP', 'TUFINLWGT') %in% names(df)]
-  
   # if no activities are explicitly provided then include all of them
   if (is.null(activities)){
     activities <- str_subset(names(df), '^t[0-9]')
-    message('No activities explicitly provided. Returning all activities.')
+    message('get_minutes(): No activities explicitly provided. Returning all activities.')
   }
+  
+  if (simplify){
+    simplify <- tibble(activity = activities, 
+                       description = 'all.activites.provided')
+  }
+  
+  if (!is.null(simplify)) {
+    if (!is.data.frame(simplify) | !(all(names(simplify) %in% c('activity', 'description')))) {
+      stop(
+        "if simplifying then simplify must be a data frame with columns 'activity' and 'description'"
+      )
+    }
+  }
+  
+  # select the correct weighting variable based on the data provided
+  weight.var <- c('TUFNWGTP', 'TUFINLWGT')[c('TUFNWGTP', 'TUFINLWGT') %in% names(df)]
   
   df %>% 
     select(TUCASEID, weight.var, groups, activities) %>%
@@ -198,31 +246,50 @@ get_minutes <- function(df, groups, activities = NULL, simplify = FALSE){
     {
       # if simplifying, then left join to get the descriptions and then
       #  sum the minutes
-      if(simplify) fuzzyjoin::regex_left_join(
-        x = .,
-        y = curated.codes,
-        by = c(activity = 'activity')) %>% 
+      if(!is.null(simplify)) {
+        left_join(x = .,
+                  y = simplify,
+                  by = 'activity') %>% 
         select(activity = description, groups, weighted.minutes) %>% 
         group_by_at(vars(activity, groups)) %>%
         summarize(weighted.minutes = sum(weighted.minutes)) %>% 
         ungroup()
-      else .
+      } else .
     }
 }
 
-get_participation <- function(df, groups, activities = NULL, simplify = FALSE) {
+get_participation <- function(df, groups, activities = NULL, simplify = NULL) {
   # function returns the weighted participation rate per groups and activities
   # if activities is not provided then all t* columsn are used
-  # if simplify = TRUE then activities will be grouped into the curated.codes
+  # if aggregate = TRUE then collapse activities into one activity
+  # if simplify = TRUE then activities will be grouped into one
+  # if simplify = data frame then activities will be grouped by the dataframe
+  #   data frame should contain columns 'activity' with the codes and 'description' representing group names
   
-  weight.var <-
-    c('TUFNWGTP', 'TUFINLWGT')[c('TUFNWGTP', 'TUFINLWGT') %in% names(df)]
-  
-  if (is.null(activities)) {
-    activities <- str_subset(names(df), '^t[0-9]')
-    message('No activities explicitly provided. Returning all activities.')
+  if (!all("TUCASEID" %in% names(df) & any(c('TUFINLWGT', 'TUFNWGTP') %in% names(df)))) {
+    stop("data must contain variables named TUCASEID and (TUFINLWGT or TUFNWGTP)")
   }
   
+  # if no activities are explicitly provided then include all of them
+  if (is.null(activities)){
+    activities <- str_subset(names(df), '^t[0-9]')
+    message('get_participation(): No activities explicitly provided. Returning all activities.')
+  }
+  
+  if (simplify){
+    simplify <- tibble(activity = activities, 
+                       description = 'all.activites.provided')
+  }
+  
+  if (!is.null(simplify)) {
+    if (!is.data.frame(simplify) | !(all(names(simplify) %in% c('activity', 'description')))) {
+      stop(
+        "if simplifying then simplify must be a data frame with columns 'activity' and 'description'"
+      )
+    }
+  }
+  
+  weight.var <- c('TUFNWGTP', 'TUFINLWGT')[c('TUFNWGTP', 'TUFINLWGT') %in% names(df)]
   
   df %>%
     select(TUCASEID, weight.var, groups, activities) %>%
@@ -233,13 +300,14 @@ get_participation <- function(df, groups, activities = NULL, simplify = FALSE) {
     ) %>%
     {
       # if simplifying, then left join to get the descriptions
-      if (simplify)
-        fuzzyjoin::regex_left_join(x = .,
-                                   y = curated.codes,
-                                   by = c(activity = 'activity')) %>%
-        select(TUCASEID, weight.var, groups, activity = description, time)
-      else
-        .
+      # if simplifying, then left join to get the descriptions and then
+      #  sum the minutes
+      if (!is.null(simplify)) {
+        left_join(x = .,
+                  y = simplify,
+                  by = 'activity') %>%
+          select(TUCASEID, weight.var, groups, activity = description, groups, time)
+      } else .
     } %>%
     group_by_at(vars(activity, groups)) %>%
     group_modify(~ {
@@ -254,7 +322,7 @@ get_participation <- function(df, groups, activities = NULL, simplify = FALSE) {
       # sum all distinct weights
       denom <- select(.x, TUCASEID, weight.var) %>%
         distinct() %>%
-        select(weight.var) %>%
+        pull(weight.var) %>%
         sum()
       
       return(tibble(participation.rate = num / denom))
@@ -262,12 +330,14 @@ get_participation <- function(df, groups, activities = NULL, simplify = FALSE) {
     ungroup()
 }
 
-get_min_per_part <- function(df, groups, activities = NULL, simplify = FALSE) {
+get_min_per_part <- function(df, groups, activities = NULL, simplify = NULL) {
   # function returns the weighted minutes per group of people who participated in that activity
   # since it calls get_minutes() and get_participation() it also returns the weighted minutes
   #  and the weighted participation rate
   # if activities is not provided then all t* columsn are used
-  # if simplify = TRUE then activities will be grouped into the curated.codes
+  # if simplify = TRUE then activities will be grouped into one
+  # if simplify = data frame then activities will be grouped by the dataframe
+  #   data frame should contain columns 'activity' with the codes and 'description' representing group names
   
   
   min.df <- get_minutes(df = df, groups = groups, activities = activities, simplify = simplify)
@@ -277,11 +347,31 @@ get_min_per_part <- function(df, groups, activities = NULL, simplify = FALSE) {
     stop("Issue in matching minutes and participation data.frames. Number of rows does not match.")
   }
   
-  bind_cols(min.df, part.df) %>% 
+  rslts <- bind_cols(min.df, part.df) %>% 
     mutate(minutes.per.participant = weighted.minutes / participation.rate) %>% 
     select(activity, groups, weighted.minutes, participation.rate, minutes.per.participant)
-}
   
+  # fix NaNs; NaNs produced when participation.rate is 0
+  rslts$minutes.per.participant[is.nan(rslts$minutes.per.participant)] <- 0
+  
+  return(rslts)
+}
+
+
+
+get_minutes(atussum_0318, 'TESEX', simplify = descriptions)
+grouping <- enframe(game.codes) %>% 
+  mutate(description = c(rep('yes', 30), rep('no', 7))) %>% 
+  select(activity = value, description)
+get_minutes(atussum_0318, 'TESEX', game.codes, simplify = grouping)
+
+get_participation(atussum_0318, 'TESEX', simplify = descriptions)
+get_participation(atussum_0318, 'TESEX', game.codes, simplify = grouping)
+
+rm(grouping)
+
+
+
 
 # function testing --------------------------------------------------------
 
@@ -295,24 +385,25 @@ get_min_per_part <- function(df, groups, activities = NULL, simplify = FALSE) {
 # get_min_per_part(atussum_0318, groups = NULL, activities = game.codes, simplify = TRUE)
 
 # check function against this pdf: https://www.bls.gov/tus/a1-2018.pdf
-# get_min_per_part(df = atussum_2018, groups = c('TESEX'), simplify = TRUE) %>% 
+# get_min_per_part(df = atussum_2018, groups = c('TESEX'), simplify = TRUE) %>%
 #   # match based on regex code in curated.codes
 #   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
 #          weighted.hours = round(weighted.minutes / 60, 2),
 #          participation.rate = round(participation.rate, 4),
-#          hours.per.participant = round(minutes.per.participant/ 60, 2)) %>% 
-#   select(-weighted.minutes, -minutes.per.participant ) %>% 
-#   View('2018')
+#          hours.per.participant = round(minutes.per.participant/ 60, 2)) %>%
+#   select(-weighted.minutes, -minutes.per.participant ) %>%
+#   pivot_wider(id = activity, names_from = 'TESEX', values_from = 3:5) %>% 
+#   View('2018 summary')
 
 # additions to data -------------------------------------------------------
   
 # add indicator for work day to 2018 summary file
-# atussum_2018 <- atussum_2018 %>% 
-#   select(contains('t05')) %>% 
-#   rowSums() %>% 
-#   enframe() %>% 
-#   mutate(work.status = value >= 120) %>% 
-#   select(work.status) %>% 
+# atussum_2018 <- atussum_2018 %>%
+#   select(contains('t05')) %>%
+#   rowSums() %>%
+#   enframe() %>%
+#   mutate(work.status = value >= 120) %>%
+#   select(work.status) %>%
 #   bind_cols(atussum_2018)
 
 # add indicator for work day to 2003-2018 summary file

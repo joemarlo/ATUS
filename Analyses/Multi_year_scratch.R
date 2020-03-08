@@ -6,7 +6,7 @@ source('Analyses/Helper_functions.R')
 # summary table -----------------------------------------------------------
 
 # summary table of activities by sex; this takes a few minutes
-get_min_per_part(df = atussum_0318, groups = c('TESEX'), simplify = TRUE) %>% 
+get_min_per_part(df = atussum_2018, groups = c('TESEX'), simplify = descriptions) %>% 
   # match based on regex code in curated.codes
   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
          weighted.hours = round(weighted.minutes / 60, 2),
@@ -15,6 +15,12 @@ get_min_per_part(df = atussum_0318, groups = c('TESEX'), simplify = TRUE) %>%
   select(-weighted.minutes, -minutes.per.participant ) %>% 
   View('2003-2018 summary')
 
+get_minutes(atussum_2018, 'TESEX', simplify = descriptions) %>% 
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
+         weighted.hours = round(weighted.minutes / 60, 2)) %>% 
+  select(-weighted.minutes) %>% 
+  pivot_wider(names_from = 'TESEX', values_from = 'weighted.hours') %>% 
+  View('2003-2018 summary')
 
 # panel plots -------------------------------------------------------------
 
@@ -32,10 +38,7 @@ apply_weights(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t
   labs(title = "Average time watching television by age",
        caption = "2003-2018 American Time Use Survey",
        x = "Age",
-       y = 'Average hours:minutes per day') +
-  theme(legend.title = element_blank(),
-        legend.position = 'bottom',
-        legend.key = element_rect(fill = NA))
+       y = 'Average hours:minutes per day')
 
 ggsave(filename = "Plots/TV_by_age_sex.svg",
        plot = last_plot(),
@@ -89,19 +92,19 @@ sec.codes <- names(atussum_0318)[names(atussum_0318) %in% sec.codes]
 # average minutes in security
 atussum_0318 %>% 
   select(TUFNWGTP, TUCASEID, sec.codes, TUYEAR) %>% 
-  apply_weights(df = ., groups = 'TUYEAR', participants.only = TRUE) %>% 
-  group_by(TUYEAR) %>% 
-  summarize(total.sec = sum(weighted.minutes)) %>% 
-  ggplot(aes(x = TUYEAR, y = total.sec)) +
+  get_min_per_part(groups = 'TUYEAR', simplify = TRUE) %>%
+  ggplot(aes(x = TUYEAR, y = minutes.per.participant)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 3),
               se = FALSE,
               color = blog.color,
               linetype = 'dashed') +
-  labs(title = 'Average weight times in security related activities',
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  labs(title = 'Average time spent in security related activities',
+       subtitle = 'For those who participated',
        caption = "2003-2018 American Time Use Survey",
        x = 'Year',
-       y = 'Average minutes per day')
+       y = 'Average hours:minutes per day')
   
 # houseplants -------------------------------------------------------------
 
