@@ -219,9 +219,9 @@ get_minutes <- function(df, groups, activities = NULL, simplify = NULL){
     message('get_minutes(): No activities explicitly provided. Returning all activities.')
   }
   
-  if (simplify){
+  if (isTRUE(simplify)){
     simplify <- tibble(activity = activities, 
-                       description = 'all.activites.provided')
+                       description = 'All activites provided')
   }
   
   if (!is.null(simplify)) {
@@ -276,9 +276,9 @@ get_participation <- function(df, groups, activities = NULL, simplify = NULL) {
     message('get_participation(): No activities explicitly provided. Returning all activities.')
   }
   
-  if (simplify){
+  if (isTRUE(simplify)){
     simplify <- tibble(activity = activities, 
-                       description = 'all.activites.provided')
+                       description = 'All activites provided')
   }
   
   if (!is.null(simplify)) {
@@ -299,7 +299,6 @@ get_participation <- function(df, groups, activities = NULL, simplify = NULL) {
       values_to = 'time'
     ) %>%
     {
-      # if simplifying, then left join to get the descriptions
       # if simplifying, then left join to get the descriptions and then
       #  sum the minutes
       if (!is.null(simplify)) {
@@ -358,24 +357,18 @@ get_min_per_part <- function(df, groups, activities = NULL, simplify = NULL) {
 }
 
 
-
-get_minutes(atussum_0318, 'TESEX', simplify = descriptions)
-grouping <- enframe(game.codes) %>% 
-  mutate(description = c(rep('yes', 30), rep('no', 7))) %>% 
-  select(activity = value, description)
-get_minutes(atussum_0318, 'TESEX', game.codes, simplify = grouping)
-
-get_participation(atussum_0318, 'TESEX', simplify = descriptions)
-get_participation(atussum_0318, 'TESEX', game.codes, simplify = grouping)
-
-rm(grouping)
-
-
-
-
 # function testing --------------------------------------------------------
 
 # game.codes <- colnames(atussum_0318)[colnames(atussum_0318) %in% paste0('t', 130101:130199)]
+# get_minutes(atussum_0318, 'TESEX', simplify = descriptions)
+# grouping <- enframe(game.codes) %>% 
+#   mutate(description = c(rep('yes', 30), rep('no', 7))) %>% 
+#   select(activity = value, description)
+# get_minutes(atussum_0318, 'TESEX', game.codes, simplify = grouping)
+# get_participation(atussum_0318, 'TESEX', simplify = descriptions)
+# get_participation(atussum_0318, 'TESEX', game.codes, simplify = grouping)
+# rm(grouping)
+# 
 # get_participation(atussum_0318, groups = NULL, activities = game.codes, simplify = TRUE)
 # get_minutes(atussum_0318, groups = NULL, activities = game.codes, simplify = TRUE)
 # all.equal(
@@ -383,8 +376,8 @@ rm(grouping)
 #   get_minutes(atussum_0318, groups = NULL, activities = game.codes)
 # )
 # get_min_per_part(atussum_0318, groups = NULL, activities = game.codes, simplify = TRUE)
-
-# check function against this pdf: https://www.bls.gov/tus/a1-2018.pdf
+# 
+# # check function against this pdf: https://www.bls.gov/tus/a1-2018.pdf
 # get_min_per_part(df = atussum_2018, groups = c('TESEX'), simplify = TRUE) %>%
 #   # match based on regex code in curated.codes
 #   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
@@ -392,7 +385,7 @@ rm(grouping)
 #          participation.rate = round(participation.rate, 4),
 #          hours.per.participant = round(minutes.per.participant/ 60, 2)) %>%
 #   select(-weighted.minutes, -minutes.per.participant ) %>%
-#   pivot_wider(id = activity, names_from = 'TESEX', values_from = 3:5) %>% 
+#   pivot_wider(id = activity, names_from = 'TESEX', values_from = 3:5) %>%
 #   View('2018 summary')
 
 # additions to data -------------------------------------------------------

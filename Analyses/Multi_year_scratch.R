@@ -6,7 +6,7 @@ source('Analyses/Helper_functions.R')
 # summary table -----------------------------------------------------------
 
 # summary table of activities by sex; this takes a few minutes
-get_min_per_part(df = atussum_2018, groups = c('TESEX'), simplify = descriptions) %>% 
+get_min_per_part(df = atussum_0318, groups = c('TESEX'), simplify = descriptions) %>% 
   # match based on regex code in curated.codes
   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
          weighted.hours = round(weighted.minutes / 60, 2),
@@ -15,7 +15,7 @@ get_min_per_part(df = atussum_2018, groups = c('TESEX'), simplify = descriptions
   select(-weighted.minutes, -minutes.per.participant ) %>% 
   View('2003-2018 summary')
 
-get_minutes(atussum_2018, 'TESEX', simplify = descriptions) %>% 
+get_minutes(atussum_0318, 'TESEX', simplify = descriptions) %>% 
   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female'),
          weighted.hours = round(weighted.minutes / 60, 2)) %>% 
   select(-weighted.minutes) %>% 
@@ -78,6 +78,29 @@ ggsave(filename = "Plots/Activities_by_age_work.svg",
        width = 9,
        height = 17)
 
+
+# housework by sex --------------------------------------------------------
+
+house.codes <- descriptions %>% 
+  filter(description == 'Household Activities') %>%
+  pull(activity)
+
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, house.codes, TESEX, TUYEAR) %>% 
+  get_min_per_part(groups = c('TESEX', 'TUYEAR'), simplify = TRUE) %>%
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  pivot_longer(cols = 4:6) %>% 
+  ggplot(aes(x = TUYEAR, y = value, group = TESEX, color = as.factor(TESEX))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed') +
+  # scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  facet_wrap(~name, ncol = 3, scales = 'free_y') +
+  labs(title = 'Average time spent in household activities',
+       caption = "2003-2018 American Time Use Survey",
+       x = NULL,
+       y = NULL)
 
 # security over the years --------------------------------------------------------------------
 
