@@ -47,14 +47,8 @@ ggsave(filename = "Plots/TV_by_age_sex.svg",
        height = 5)
 
 # facet plots of all the activities by age
-apply_weights(df = atussum_0318, groups = c('TEAGE', 'work.status')) %>% 
-  # match based on regex code in curated.codes
-  fuzzyjoin::regex_left_join(x = ., y = curated.codes.2, by = c(activity = 'activity')) %>%
-  # remove data code
-  # filter(activity.y != 't50.*') %>% 
+get_minutes(atussum_0318, groups = c('TEAGE', 'work.status'), simplify = descriptions) %>% 
   mutate(work.status = recode(as.character(work.status), 'TRUE' = 'Work day', 'FALSE' = 'Leisure day')) %>% 
-  group_by(TEAGE, work.status, description) %>%
-  summarize(weighted.minutes = sum(weighted.minutes)) %>% 
   ggplot(aes(x = TEAGE, y = weighted.minutes, group = work.status, color = work.status)) +
   geom_point(alpha = 0.1) +
   geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
@@ -62,7 +56,7 @@ apply_weights(df = atussum_0318, groups = c('TEAGE', 'work.status')) %>%
               linetype = 'dashed') +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
   scale_color_manual(values = c(blog.color, 'coral3')) +
-  facet_wrap(~description, scales = 'free_y', ncol = 3) +
+  facet_wrap(~activity, scales = 'free_y', ncol = 3) +
   labs(title = "Average daily time spent on activity by age and working status",
        subtitle = "2003-2018 American Time Use Survey",
        caption = 'Work day defined as working two or more hours',
@@ -101,6 +95,50 @@ atussum_0318 %>%
        caption = "2003-2018 American Time Use Survey",
        x = NULL,
        y = NULL)
+
+
+# cooking -----------------------------------------------------------------
+
+cook.codes <- c('t020201', 't020202', 't020203', 't020299')
+grocery.codes <- c('t070101', 't180701')
+
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, cook.codes, TESEX, TUYEAR) %>% 
+  get_min_per_part(groups = c('TESEX', 'TUYEAR'), simplify = TRUE) %>%
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  pivot_longer(cols = 4:6) %>% 
+  ggplot(aes(x = TUYEAR, y = value, group = TESEX, color = as.factor(TESEX))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed') +
+  facet_wrap(~name, ncol = 3, scales = 'free_y') +
+  labs(title = 'Daily time spent cooking',
+       caption = "2003-2018 American Time Use Survey",
+       x = NULL,
+       y = NULL)
+
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, grocery.codes, TESEX, TUYEAR) %>% 
+  get_min_per_part(groups = c('TESEX', 'TUYEAR'), simplify = TRUE) %>%
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  pivot_longer(cols = 4:6) %>% 
+  ggplot(aes(x = TUYEAR, y = value, group = TESEX, color = as.factor(TESEX))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed') +
+  facet_wrap(~name, ncol = 3, scales = 'free_y') +
+  labs(title = 'Daily time spent in grocery shopping',
+       caption = "2003-2018 American Time Use Survey",
+       x = NULL,
+       y = NULL)
+
+# ggsave(filename = "/home/joemarlo/Dropbox/Data/Projects/blog/static/img/posts/ATUS/slide-gallery/tmp4.png",
+#        plot = last_plot(),
+#        device = "png",
+#        width = 9,
+#        height = 6)
 
 # security over the years --------------------------------------------------------------------
 
