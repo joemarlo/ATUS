@@ -188,7 +188,7 @@ apply_weights <- function(df, groups, activities = NULL){
   # if no activities are explicitly provided then include all of them
   if (is.null(activities)){
     activities <- str_subset(names(df), '^t[0-9]')
-    message('No activities explicitly provided. Returning all activities.')
+    message('No activities explicitly provided. Returning all activities in dataframe.')
   }
   
   df %>% 
@@ -201,7 +201,7 @@ apply_weights <- function(df, groups, activities = NULL){
     ungroup()
 }
 
-get_minutes <- function(df, groups, activities = NULL, simplify = NULL){
+get_minutes <- function(df, groups = NULL, activities = NULL, simplify = NULL){
   # function takes the inputs, calculates the weights, groups
   #   then returns the weighted minutes
   # if activities is not provided then all t* columsn are used
@@ -216,7 +216,7 @@ get_minutes <- function(df, groups, activities = NULL, simplify = NULL){
   # if no activities are explicitly provided then include all of them
   if (is.null(activities)){
     activities <- str_subset(names(df), '^t[0-9]')
-    message('get_minutes(): No activities explicitly provided. Returning all activities.')
+    message('get_minutes(): No activities explicitly provided. Returning all activities in dataframe.')
   }
   
   if (isTRUE(simplify)){
@@ -258,7 +258,7 @@ get_minutes <- function(df, groups, activities = NULL, simplify = NULL){
     }
 }
 
-get_participation <- function(df, groups, activities = NULL, simplify = NULL) {
+get_participation <- function(df, groups = NULL, activities = NULL, simplify = NULL) {
   # function returns the weighted participation rate per groups and activities
   # if activities is not provided then all t* columsn are used
   # if aggregate = TRUE then collapse activities into one activity
@@ -329,7 +329,7 @@ get_participation <- function(df, groups, activities = NULL, simplify = NULL) {
     ungroup()
 }
 
-get_min_per_part <- function(df, groups, activities = NULL, simplify = NULL) {
+get_min_per_part <- function(df, groups = NULL, activities = NULL, simplify = NULL) {
   # function returns the weighted minutes per group of people who participated in that activity
   # since it calls get_minutes() and get_participation() it also returns the weighted minutes
   #  and the weighted participation rate
@@ -354,6 +354,38 @@ get_min_per_part <- function(df, groups, activities = NULL, simplify = NULL) {
   rslts$minutes.per.participant[is.nan(rslts$minutes.per.participant)] <- 0
   
   return(rslts)
+}
+
+get_SE <- function(df, groups = NULL, activities = NULL) {
+  # function returns the standard error of the weighted means
+  # see get_minutes() for underlying calculations
+  # currently only works with the 2003-2018 data
+  
+  # calculate the original statsitic
+  y0 <- get_minutes(
+    df = df,
+    groups = groups,
+    activities = activities,
+    simplify = TRUE
+  )
+  
+  # repeat the statistic calculation using each weight
+  statistics <- apply(atuswgts_0318[, -1], MARGIN = 2, FUN = function(wgt) {
+    df[, 'TUFNWGTP'] <- wgt
+    minutes <- get_minutes(
+      df = df,
+      groups = groups,
+      activities = activities,
+      simplify = TRUE
+    )
+    return(minutes$weighted.minutes)
+    }
+  )
+  
+  # calculate the standard error. See https://www.bls.gov/tus/atususersguide.pdf
+  y0$SE <- sqrt((4 / 160) * rowSums((statistics - y0$weighted.minutes) ^ 2))
+  
+  return(y0)
 }
 
 

@@ -73,6 +73,31 @@ ggsave(filename = "Plots/Activities_by_age_work.svg",
        height = 17)
 
 
+# tv confidence interval --------------------------------------------------
+
+get_SE(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304')) %>% 
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = TESEX, color = TESEX)) +
+  # geom_smooth(method = lm, formula = y ~ splines::bs(x, 3),
+  #             se = FALSE, 
+  #             linetype = 'dashed') +
+  # geom_point(alpha = 0.6) +
+  geom_line(size = 1.5) +
+  geom_ribbon(aes(ymin = weighted.minutes - (2*SE), 
+                  ymax = weighted.minutes + (2*SE),
+                  fill = TESEX),
+              alpha = 0.2) +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  labs(title = "Average time watching television by age",
+       subtitle = 'Range represents 95% confidence interval',
+       x = "Age",
+       y = 'Average hours:minutes per day',
+       caption = "2003-2018 American Time Use Survey") +
+  theme(strip.text = element_text(size = 6)) +
+  theme(legend.title = element_blank(),
+        legend.position = 'none')
+
+
 # housework by sex --------------------------------------------------------
 
 house.codes <- descriptions %>% 
