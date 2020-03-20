@@ -356,7 +356,7 @@ get_min_per_part <- function(df, groups = NULL, activities = NULL, simplify = NU
   return(rslts)
 }
 
-get_SE <- function(df, groups = NULL, activities = NULL) {
+get_SE <- function(df, groups, activities = NULL) {
   # function returns the standard error of the weighted means
   # see get_minutes() for underlying calculations
   # currently only works with the 2003-2018 data
@@ -467,12 +467,18 @@ income.levels <- tribble(~HEFAMINC, ~HH.income,
 
 # FIPS state codes --------------------------------------------------------
 
-# scrap FIPS state codes
-FIPS <- xml2::read_html('https://www.nrcs.usda.gov/wps/portal/nrcs/detail/?cid=nrcs143_013696') %>% 
+# scrape FIPS state codes if it doesn't exist
+if (!file.exists('Data/FIPS.csv')) {
+  xml2::read_html('https://www.nrcs.usda.gov/wps/portal/nrcs/detail/?cid=nrcs143_013696') %>% 
   rvest::html_nodes(xpath = '//table[contains(@class, "data")]') %>% 
   rvest::html_table() %>% 
   .[[1]] %>% 
-  rename(State = 'Postal Code')
+  rename(State = 'Postal Code') %>% 
+  write_csv('Data/FIPS.csv')
+}
+
+# read in the data
+FIPS <- read_csv('Data/FIPS.csv')
 
 
 # state regions -----------------------------------------------------------
