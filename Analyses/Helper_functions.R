@@ -359,7 +359,7 @@ get_min_per_part <- function(df, groups = NULL, activities = NULL, simplify = NU
 get_SE <- function(df, groups, activities = NULL) {
   # function returns the standard error of the weighted means
   # see get_minutes() for underlying calculations
-  # currently only works with the 2003-2018 data
+  # currently only works with the multi-year 2003-2018 data
   
   # calculate the original statsitic
   y0 <- get_minutes(

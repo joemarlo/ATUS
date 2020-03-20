@@ -35,7 +35,7 @@ apply_weights(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t
               linetype = 'dashed') +
   geom_point(alpha = 0.6) +
   scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
-  labs(title = "Average time watching television by age",
+  labs(title = "Average time watching television per day",
        caption = "2003-2018 American Time Use Survey",
        x = "Age",
        y = 'Average hours:minutes per day')
@@ -43,8 +43,8 @@ apply_weights(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t
 ggsave(filename = "Plots/TV_by_age_sex.svg",
        plot = last_plot(),
        device = "svg",
-       width = 9,
-       height = 5)
+       width = 7,
+       height = 4)
 
 # facet plots of all the activities by age
 get_minutes(atussum_0318, groups = c('TEAGE', 'work.status'), simplify = descriptions) %>% 
