@@ -22,7 +22,7 @@ get_minutes(df = atussum_0318,
   labs(title = "Average time watching television per day",
        caption = "2003-2018 American Time Use Survey",
        x = "Age",
-       y = 'Average hours:minutes per day')
+       y = 'Hours:minutes')
 
 ggsave(filename = "Plots/TV_by_age_sex.svg",
        plot = last_plot(),
@@ -44,7 +44,7 @@ get_SE(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t120303'
   labs(title = "Average time watching television by age",
        subtitle = 'Range represents 95% confidence interval',
        x = "Age",
-       y = 'Average hours:minutes per day',
+       y = 'Hours:minutes',
        caption = "2003-2018 American Time Use Survey")
 
 ggsave(filename = "Plots/TV_by_age_sex_SE.svg",
@@ -93,7 +93,7 @@ ggsave(filename = "Plots/household.svg",
        plot = last_plot(),
        device = "svg",
        width = 7,
-       height = 10)
+       height = 8)
 
 # cooking -----------------------------------------------------------------
 
@@ -133,7 +133,7 @@ ggsave(filename = "Plots/cooking.svg",
        plot = last_plot(),
        device = "svg",
        width = 7,
-       height = 10)
+       height = 8)
 
 
 # Income ------------------------------------------------------------------
@@ -269,22 +269,123 @@ leisure.codes <- names(atussum_0318)[names(atussum_0318) %in% leisure.codes]
 
 # leisure over time
 atussum_0318 %>% 
-  get_minutes(groups = 'TUYEAR', activities = leisure.codes, simplify = TRUE) %>%
-  ggplot(aes(x = TUYEAR, y = weighted.minutes, fill = weighted.minutes)) +
-  geom_col() +
-  scale_fill_gradient(low = '#0b2919', high = '#2b7551') +
+  get_SE(groups = 'TUYEAR', activities = leisure.codes) %>%
+  ggplot(aes(x = TUYEAR, y = weighted.minutes)) +
+  geom_line(size = 1.5,
+            color = blog.color) +
+  geom_ribbon(aes(ymin = weighted.minutes - (2*SE), 
+                  ymax = weighted.minutes + (2*SE)),
+              color = blog.color,
+              alpha = 0.2) +
+  # scale_fill_gradient(low = '#0b2919', high = '#2b7551') +
   labs(title = 'Daily leisure time',
-       subtitle = 'Leisure as a primary activity',
+       subtitle = 'Leisure as a primary activity. Range represents 95% confidence interval.',
        x = NULL,
        y = 'Average minutes',
        caption = '2003-2018 American Time Use Survey') +
   theme(legend.position = 'none')
   
-ggsave(filename =  "Plots/Leisure_bars.svg",
+ggsave(filename =  "Plots/Leisure_SE.svg",
        plot = last_plot(),
        device = "svg",
        width = 7,
        height = 4)
+
+
+# working tine
+work.codes <- descriptions %>% filter(grepl('Work', description)) %>% pull(activity)
+
+atussum_0318 %>% 
+  get_min_per_part(groups = 'TUYEAR', activities = work.codes, simplify = TRUE) %>% 
+  pivot_longer(cols = 3:5) %>% 
+  mutate(name = recode(name, 
+                       weighted.minutes = 'Minutes',
+                       participation.rate = 'Participation rate',
+                       minutes.per.participant = 'Minutes per participant')) %>% 
+  ggplot(aes(x = TUYEAR, y = value)) +
+  geom_point(alpha = 0.5, color = blog.color) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed',
+              color = blog.color) +
+  facet_wrap(~name, scales = 'free_y') +
+  labs(title = 'Time spent in work-related activities per day',
+       caption = '2003-2018 American Time Use Survey',
+       x = NULL,
+       y = NULL)
+  
+ggsave(filename = "Plots/work_hours_year.svg",
+       plot = last_plot(),
+       device = "svg",
+       width = 7,
+       height = 4)
+
+
+# unemployment ------------------------------------------------------------
+
+job.search.codes <- paste0('t', c('050401', '050403', '050404', '050405', '050499', '050401', '180504'))
+job.search.codes <- names(atussum_0318)[names(atussum_0318) %in% job.search.codes]
+
+atussum_0318 %>% 
+  get_min_per_part(groups = 'TUYEAR', activities = job.search.codes, simplify = TRUE) %>% 
+  pivot_longer(cols = 3:5) %>%
+  mutate(name = recode(name, 
+                       weighted.minutes = 'Minutes',
+                       participation.rate = 'Participation rate',
+                       minutes.per.participant = 'Minutes per participant')) %>% 
+  ggplot(aes(x = TUYEAR, y = value)) +
+  geom_point(alpha = 0.5, color = blog.color) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed',
+              color = blog.color) +
+  facet_wrap(~name, scales = 'free_y') +
+  labs(title = 'Time spent in job-search-related activities per day',
+       caption = '2003-2018 American Time Use Survey',
+       x = NULL,
+       y = NULL)
+
+ggsave(filename = "Plots/job_search.svg",
+       plot = last_plot(),
+       device = "svg",
+       width = 7,
+       height = 4)
+
+
+# time at home ------------------------------------------------------------
+
+home.activities <- c('Sleep', 'Personal Care', 'Household Activities', 'Caring For Household Member',
+                     'Eating and Drinking', 'Socializing, Relaxing, and Leisure')
+
+atussum_0318 %>% 
+  get_minutes(groups = c('TEAGE', 'work.status'), simplify = descriptions) %>% 
+  mutate(work.status = recode(as.character(work.status), 'TRUE' = 'Work day', 'FALSE' = 'Leisure day')) %>% 
+  filter(activity %in% home.activities) %>% 
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = work.status, color = work.status)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
+              se = FALSE, 
+              linetype = 'dashed') +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  scale_color_manual(values = c(blog.color, 'coral3')) +
+  facet_wrap(~activity, scales = 'free_y', ncol = 2) +
+  labs(title = "Average daily time spent on activity by age and working status",
+       subtitle = "Work day defined as working two or more hours",
+       caption = '2003-2018 American Time Use Survey',
+       x = "Age",
+       y = 'Hours:minutes') +
+  theme(legend.position = 'bottom',
+        legend.title = element_blank())
+
+ggsave(filename = "Plots/Home_activities.svg",
+       plot = last_plot(),
+       device = "svg",
+       width = 7,
+       height = 8)
+
+
+
+# slide show --------------------------------------------------------------
 
 # states by leisure activity
 leisure.by.state <- atussum_0318 %>% 
@@ -303,7 +404,7 @@ leisure.by.state %>%
   coord_map(projection = "albers", lat0 = 38, lat1 = 45,
             xlim = c(-120, -75)) +
   scale_fill_gradient(low = '#0b2919', high = '#7dd1a8',
-                       name = 'Minutes') +
+                      name = 'Minutes') +
   labs(title = 'Daily leisure time',
        subtitle = 'Leisure as a primary activity',
        caption = '2003-2018 American Time Use Survey') +
@@ -313,40 +414,233 @@ leisure.by.state %>%
         legend.title = element_text(hjust = 0),
         legend.position = 'right')
 
-ggsave(filename = "Plots/Leisure_map.svg",
+ggsave(filename = "Plots/Leisure_map.png",
        plot = last_plot(),
-       device = "svg",
-       width = 7)
+       device = "png",
+       width = 7,
+       height = 7)
 
-# working tine
-work.codes <- descriptions %>% filter(grepl('Work', description)) %>% pull(activity)
+
+# dot plot of leisure by state
+leisure.by.state %>% 
+  left_join(state.regions, by = c(Name = 'State')) %>% 
+  mutate(mean.leisure = mean(total.leisure)) %>% 
+  ggplot(aes(x = total.leisure, y = reorder(Name, total.leisure))) +
+  geom_point(aes(color = Region)) +
+  geom_vline(aes(xintercept = mean.leisure), color = 'grey70') +
+  scale_x_continuous(breaks = seq(6, 20, 2)) +
+  geom_label(aes(x = mean.leisure + 2, y = 5, 
+                 label = paste0('State average = ', round(mean.leisure), ' minutes')),
+             color = 'white',
+             fill = 'grey70') +
+  labs(title = 'Average leisure time per day',
+       subtitle = 'Leisure as a primary activity',
+       caption = '2003-2018 American Time Use Survey',
+       x = 'Minutes per day',
+       y = NULL) +
+  theme(legend.position = 'bottom',
+        legend.key = element_rect(fill = NA))
+
+ggsave(filename = "Plots/Leisure_dots.png",
+       plot = last_plot(),
+       device = "png",
+       width = 7,
+       height = 7)
+
+
+# plot of average minutes per day by activity and household income
+atussum_0318 %>% 
+  left_join(distinct(atuscps_0318[, c('TUCASEID', 'HEFAMINC')])) %>%
+  left_join(income.levels) %>% 
+  apply_weights(df = ., groups = c('HH.income')) %>% 
+  fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
+  filter(activity.y != 't50.*') %>% 
+  group_by(HH.income, description) %>% 
+  summarize(weighted.minutes = sum(weighted.minutes)) %>%
+  ggplot(aes(x = HH.income, y = weighted.minutes, color = weighted.minutes)) +
+  geom_point() +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  facet_wrap(~description, scales = 'free_y', ncol = 3) +
+  labs(title = "Average daily time spent on activity by household income",
+       caption = "2018 American Time Use Survey",
+       x = "Household income",
+       y = 'Hours:minutes') +
+  theme(strip.text = element_text(size = 6)) +
+  theme(legend.title = element_blank(),
+        legend.position = 'none')
+
+ggsave(filename = "Plots/Activities_income.png",
+       plot = last_plot(),
+       device = "png",
+       width = 8,
+       height = 8)
+
+
+# plot of average minutes per day by activity, household income, and age
+atussum_0318 %>% 
+  # join with hh income from CPS
+  left_join(distinct(atuscps_0318[, c('TUCASEID', 'HEFAMINC')])) %>%
+  left_join(income.levels) %>% 
+  mutate(HH.inc.cut = cut(HH.income,
+                          breaks = seq(0, 150000, by = 50000), 
+                          include.lowest = TRUE, ordered_result = TRUE),
+         HH.inc.cut = factor(HH.inc.cut, levels = levels(HH.inc.cut))) %>% 
+  apply_weights(df = ., groups = c('HH.inc.cut', 'TEAGE', 'work.status')) %>% 
+  fuzzyjoin::regex_left_join(x = ., y = curated.codes, by = c(activity = 'activity')) %>%
+  filter(activity.y != 't50.*',
+         work.status == TRUE) %>% 
+  group_by(HH.inc.cut, description, TEAGE) %>% 
+  summarize(weighted.minutes = sum(weighted.minutes)) %>%
+  na.omit() %>% 
+  ggplot(aes(x = TEAGE, y = weighted.minutes, color = HH.inc.cut, group = HH.inc.cut)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4),
+              se = FALSE,
+              linetype = 'longdash') +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  scale_color_manual(values = c('darkgreen', 'firebrick3','royalblue3'),
+                     labels = c( '$0-50k', '$50-100k', '$100-150k')) +
+  facet_wrap(~description, scales = 'free_y', ncol = 3) +
+  labs(title = "Average daily time spent on activity by household income during work days",
+       caption = "2003-2018 American Time Use Survey",
+       subtitle = 'Work day defined as working two or more hours',
+       x = "Age",
+       y = 'Hours:minutes') +
+  theme(strip.text = element_text(size = 8),
+        legend.title = element_blank(),
+        legend.position = 'bottom')
+
+ggsave(filename = "Plots/Activities_by_age_income_work.png",
+       plot = last_plot(),
+       device = "png",
+       width = 8,
+       height = 8)
+
+
+# cooking by age and sex
+cook.codes <- c('t020201', 't020202', 't020203', 't020299')
+grocery.codes <- c('t070101', 't180701')
 
 atussum_0318 %>% 
-  get_min_per_part(groups = 'TUYEAR', activities = work.codes, simplify = TRUE) %>% 
-  pivot_longer(cols = 3:5) %>% 
+  select(TUFNWGTP, TUCASEID, cook.codes, TESEX, TEAGE) %>% 
+  get_min_per_part(groups = c('TESEX', 'TEAGE'), simplify = TRUE) %>%
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  pivot_longer(cols = 4:6) %>% 
+  mutate(name = recode(name, 
+                       weighted.minutes = 'Minutes',
+                       participation.rate = 'Participation rate',
+                       minutes.per.participant = 'Minutes per participant')) %>% 
+  ggplot(aes(x = TEAGE, y = value, group = TESEX, color = as.factor(TESEX))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed') +
+  facet_wrap(~name, ncol = 3, scales = 'free_y') +
+  labs(title = 'Daily time spent cooking',
+       caption = "2003-2018 American Time Use Survey",
+       x = 'Age',
+       y = NULL)
+
+ggsave(filename = "Plots/Cooking_only.png",
+       plot = last_plot(),
+       device = "png",
+       width = 8,
+       height = 8)
+
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, grocery.codes, TESEX, TEAGE) %>% 
+  get_min_per_part(groups = c('TESEX', 'TEAGE'), simplify = TRUE) %>%
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  pivot_longer(cols = 4:6) %>%
+  mutate(name = recode(name, 
+                       weighted.minutes = 'Minutes',
+                       participation.rate = 'Participation rate',
+                       minutes.per.participant = 'Minutes per participant')) %>% 
+  ggplot(aes(x = TEAGE, y = value, group = TESEX, color = as.factor(TESEX))) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = loess,
+              se = FALSE,
+              linetype = 'dashed') +
+  facet_wrap(~name, ncol = 3, scales = 'free_y') +
+  labs(title = 'Daily time spent in grocery shopping',
+       caption = "2003-2018 American Time Use Survey",
+       x = 'Age',
+       y = NULL)
+
+ggsave(filename = "Plots/Groceries_only.png",
+       plot = last_plot(),
+       device = "png",
+       width = 8,
+       height = 8)
+
+
+# security over the years
+sec.codes <- specific.codes %>%
+  filter(grepl('secu', Description, ignore.case = TRUE)) %>% 
+  filter(Description != 'Home security') %>% 
+  pull(Code) %>% 
+  paste0('t', .)
+sec.codes <- names(atussum_0318)[names(atussum_0318) %in% sec.codes]
+
+# average minutes in security
+atussum_0318 %>% 
+  select(TUFNWGTP, TUCASEID, sec.codes, TUYEAR) %>% 
+  get_min_per_part(groups = 'TUYEAR', simplify = TRUE) %>%
+  filter(TUYEAR != 2011) %>% #outlier
+  ggplot(aes(x = TUYEAR, y = minutes.per.participant)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = 'loess',
+              se = FALSE,
+              color = blog.color,
+              linetype = 'dashed') +
+  scale_y_continuous(label = function(x) sprintf("%2d:%02d", as.integer(x %/% 60), as.integer(x %% 60))) +
+  labs(title = 'Average time spent in security related activities',
+       subtitle = 'For those who participated',
+       caption = "2003-2018 American Time Use Survey",
+       x = 'Year',
+       y = 'Hours:minutes per day')
+
+ggsave(filename = "Plots/Security.png",
+       plot = last_plot(),
+       device = "png",
+       width = 8,
+       height = 8)
+
+
+# houseplants -------------------------------------------------------------
+
+plant.codes <- specific.codes %>%
+  filter(grepl('gard', Description, ignore.case = TRUE)) %>% 
+  pull(Code) %>% 
+  paste0('t', .)
+
+plant.codes <- names(atussum_0318)[names(atussum_0318) %in% plant.codes]
+
+# houseplants averaged over age
+atussum_0318 %>% 
+  filter(TEAGE >= 20,
+         TEAGE <= 40) %>% 
+  get_min_per_part(groups = 'TUYEAR', activities = plant.codes, simplify = TRUE) %>% 
+  pivot_longer(cols = 3:5) %>%
   mutate(name = recode(name, 
                        weighted.minutes = 'Minutes',
                        participation.rate = 'Participation rate',
                        minutes.per.participant = 'Minutes per participant')) %>% 
   ggplot(aes(x = TUYEAR, y = value)) +
-  geom_point(alpha = 0.5, color = blog.color) +
-  geom_smooth(method = lm, formula = y ~ splines::bs(x, 3),
-              se = FALSE, 
-              linetype = 'dashed',
+  geom_point(alpha = 0.5,
+             color = blog.color) +
+  geom_smooth(method = loess,
+              se = FALSE,
               color = blog.color) +
   facet_wrap(~name, scales = 'free_y') +
-  labs(title = 'Time spent in work-related activities per day',
-       caption = '2003-2018 American Time Use Survey',
-       x = NULL,
+  labs(title = 'Average times spent on garden, lawn, and houseplants among 20-40 year olds',
+       x = 'Year',
        y = NULL)
-  
-ggsave(filename = "Plots/work_hours_year.svg",
+
+ggsave(filename = "Plots/Plants.png",
        plot = last_plot(),
-       device = "svg",
-       width = 7,
-       height = 4)
-
-
-# unemployment ------------------------------------------------------------
-
+       device = "png",
+       width = 8,
+       height = 8)
 
