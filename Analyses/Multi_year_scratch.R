@@ -44,7 +44,7 @@ ggsave(filename = "Plots/TV_by_age_sex.svg",
        plot = last_plot(),
        device = "svg",
        width = 7,
-       height = 4)
+       height = 5)
 
 # facet plots of all the activities by age
 get_minutes(atussum_0318, groups = c('TEAGE', 'work.status'), simplify = descriptions) %>% 
