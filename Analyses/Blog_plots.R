@@ -439,7 +439,8 @@ leisure.by.state %>%
        x = 'Minutes per day',
        y = NULL) +
   theme(legend.position = 'bottom',
-        legend.key = element_rect(fill = NA))
+        legend.key = element_rect(fill = NA),
+        axis.text.y = element_text(size = 7))
 
 ggsave(filename = "Plots/Leisure_dots.png",
        plot = last_plot(),
@@ -563,7 +564,7 @@ atussum_0318 %>%
               se = FALSE,
               linetype = 'dashed') +
   facet_wrap(~name, ncol = 3, scales = 'free_y') +
-  labs(title = 'Daily time spent in grocery shopping',
+  labs(title = 'Daily time spent grocery shopping',
        caption = "2003-2018 American Time Use Survey",
        x = 'Age',
        y = NULL)
