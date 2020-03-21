@@ -4,7 +4,6 @@ library(maps)
 source('Analyses/Helper_functions.R')
 
 
-
 # television --------------------------------------------------------------
 
 # scatter plot of watching tv by age and sex
@@ -227,14 +226,14 @@ atussum_0318 %>%
   mutate(weighted.minutes = weighted.minutes / sum(weighted.minutes),
          # calculate income weighted by part.rate for sorting purposes
          mean.inc = mean(HH.income * weighted.minutes)) %>%
+  ungroup() %>%
   # remove waiting text
   mutate(Description = str_remove(Description, 'Waiting associated with '),
          Description = str_remove(Description, 'Waiting associated w/'),
          Description = str_remove(Description, 'Waiting assoc. w/'),
          Description = str_remove(Description, 'Waiting related to '),
          Description = str_remove(Description, 'Waiting for/'),
-         Description = str_to_sentence(Description)) %>% 
-  ungroup() %>%
+         Description = paste0('... ', Description)) %>% 
   ggplot(aes(x = reorder(Description, -mean.inc), y = weighted.minutes, 
              group = rev(HH.income), fill = as.factor(HH.income))) +
   geom_col(position = 'stack', color = 'white') +
