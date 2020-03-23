@@ -33,8 +33,9 @@ ggsave(filename = "Plots/TV_by_age_sex.svg",
 # tv by age and sex with 95% confidence interval
 get_SE(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304')) %>% 
   mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
-  ggplot(aes(x = TEAGE, y = weighted.minutes, group = TESEX, color = TESEX)) +
-  geom_line(size = 1.5) +
+  ggplot(aes(x = TEAGE, y = weighted.minutes, group = TESEX)) +
+  geom_line(aes(color = TESEX),
+            size = 1.5) +
   geom_ribbon(aes(ymin = weighted.minutes - (2*SE), 
                   ymax = weighted.minutes + (2*SE),
                   fill = TESEX),
@@ -274,7 +275,7 @@ atussum_0318 %>%
             color = blog.color) +
   geom_ribbon(aes(ymin = weighted.minutes - (2*SE), 
                   ymax = weighted.minutes + (2*SE)),
-              color = blog.color,
+              fill = blog.color,
               alpha = 0.2) +
   # scale_fill_gradient(low = '#0b2919', high = '#2b7551') +
   labs(title = 'Daily leisure time',
