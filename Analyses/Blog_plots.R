@@ -29,6 +29,17 @@ ggsave(filename = "Plots/TV_by_age_sex.svg",
        width = 7,
        height = 5)
 
+# data for d3.js
+get_minutes(df = atussum_0318, 
+            groups = c('TEAGE', 'TESEX'), 
+            activities = c('t120303', 't120304'), 
+            simplify = TRUE) %>% 
+  mutate(TESEX = recode(as.character(TESEX), '1' = 'Male', '2' = 'Female')) %>% 
+  select(-activity) %>% 
+  pivot_wider(values_from = weighted.minutes, names_from = TESEX) %>% 
+  mutate(Male_smooth = loess(Male ~ TEAGE, data = .)$fitted,
+         Female_smooth = loess(Female ~ TEAGE, data = .)$fitted) %>% 
+  write_csv("Data/d3_tv.csv")
 
 # tv by age and sex with 95% confidence interval
 get_SE(df = atussum_0318, groups = c('TEAGE', 'TESEX'), activities = c('t120303', 't120304')) %>% 
