@@ -1,0 +1,432 @@
+code	offical_name	offical_summary_category	suggested_categorization	average_minutes	avg_minutes_per_participant	participation_rate
+t010101	Sleeping	Personal Care	Sleep	518.07	518.68	1
+t010102	Sleeplessness	Personal Care	Sleep	3.78	76.74	0.05
+t010199	Sleeping, n.e.c.*	Personal Care	Sleep	0.01	126.45	0
+t010201	Washing, dressing and grooming oneself	Personal Care	Personal Care	40.61	50.93	0.8
+t010299	Grooming, n.e.c.*	Personal Care	Personal Care	0.04	75.56	0
+t010301	Health-related self care	Personal Care	Personal Care	4.62	76.35	0.06
+t010399	Self care, n.e.c.*	Personal Care	Personal Care	0.17	128.24	0
+t010401	Personal/Private activities	Personal Care	Personal Care	0.55	73.66	0.01
+t010499	Personal activities, n.e.c.*	Personal Care	Personal Care	0.02	144.31	0
+t010501	Personal emergencies	Personal Care	Personal Care	0	38.63	0
+t010599	Personal care emergencies, n.e.c.*	Personal Care	Personal Care	0	20	0
+t019999	Personal Care, n.e.c.*	Personal Care	Personal Care	0	36.75	0
+t020101	Interior cleaning	Household Activities	Household Activities	21.76	91.28	0.24
+t020102	Laundry	Household Activities	Household Activities	10.45	64.95	0.16
+t020103	Sewing, repairing, & maintaining textiles	Household Activities	Household Activities	1.58	152.75	0.01
+t020104	Storing interior hh items, inc. food	Household Activities	Household Activities	1.24	21.13	0.06
+t020199	Housework, n.e.c.*	Household Activities	Household Activities	0.04	96.18	0
+t020201	Food and drink preparation	Household Activities	Household Activities	25.6	50.71	0.5
+t020202	Food presentation	Household Activities	Household Activities	0.34	16.77	0.02
+t020203	Kitchen and food clean-up	Household Activities	Household Activities	7.32	33.8	0.22
+t020299	Food & drink prep, presentation, & clean-up, n.e.c.*	Household Activities	Household Activities	0	12.06	0
+t020301	Interior arrangement, decoration, & repairs	Household Activities	Household Activities	3.4	159.25	0.02
+t020302	Building and repairing furniture	Household Activities	Household Activities	0.34	134.08	0
+t020303	Heating and cooling	Household Activities	Household Activities	0.53	64.46	0.01
+t020399	Interior maintenance, repair, & decoration, n.e.c.*	Household Activities	Household Activities	0.03	95.2	0
+t020401	Exterior cleaning	Household Activities	Household Activities	1.76	88.59	0.02
+t020402	Exterior repair, improvements, & decoration	Household Activities	Household Activities	1.65	165.48	0.01
+t020499	Exterior maintenance, repair & decoration, n.e.c.*	Household Activities	Household Activities	0.03	98.87	0
+t020501	Lawn, garden, and houseplant care	Household Activities	Household Activities	11.34	119.44	0.09
+t020502	Ponds, pools, and hot tubs	Household Activities	Household Activities	0.21	60.52	0
+t020599	Lawn and garden, n.e.c.*	Household Activities	Household Activities	0	48.46	0
+t020681	NA	Household Activities	Household Activities	5.95	39.28	0.15
+t020699	Pet and animal care, n.e.c.*	Household Activities	Household Activities	0.02	34.89	0
+t020701	Vehicle repair and maintenance (by self)	Household Activities	Household Activities	2.47	99.57	0.02
+t020799	Vehicles, n.e.c.*	Household Activities	Household Activities	0.01	22.14	0
+t020801	Appliance, tool, and toy set-up, repair, & maintenance (by self)	Household Activities	Household Activities	1.04	74.52	0.01
+t020899	Appliances and tools, n.e.c.*	Household Activities	Household Activities	0	7.58	0
+t020901	Financial management	Household Activities	Household Activities	1.82	49.27	0.04
+t020902	Household & personal organization and planning	Household Activities	Household Activities	5.92	42.08	0.14
+t020903	HH & personal mail & messages (except e-mail)	Household Activities	Household Activities	1.24	20.64	0.06
+t020904	HH & personal e-mail and messages	Household Activities	Household Activities	2.33	36.12	0.06
+t020905	Home security	Household Activities	Household Activities	0.14	11.16	0.01
+t020999	Household management, n.e.c.*	Household Activities	Household Activities	0.01	45.37	0
+t029999	Household activities, n.e.c.*	Household Activities	Household Activities	0.16	103.98	0
+t030101	Physical care for hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	9.18	63.08	0.15
+t030102	Reading to/with hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.77	29.56	0.03
+t030103	Playing with hh children, not sports	Caring For & Helping Household (HH) Member	Caring For Household Member	5.69	104.77	0.05
+t030104	Arts and crafts with hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.06	53.68	0
+t030105	Playing sports with hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.21	61.14	0
+t030108	Organization & planning for hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.22	21.28	0.01
+t030109	Looking after hh children (as a primary activity)	Caring For & Helping Household (HH) Member	Caring For Household Member	1.71	73.02	0.02
+t030110	Attending hh children's events	Caring For & Helping Household (HH) Member	Caring For Household Member	1.26	109.47	0.01
+t030111	Waiting for/with hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.39	23.14	0.02
+t030112	Picking up/dropping off hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	1.09	12.72	0.09
+t030186	NA	Caring For & Helping Household (HH) Member	Caring For Household Member	1.07	36.46	0.03
+t030199	Caring for & helping hh children, n.e.c.*	Caring For & Helping Household (HH) Member	Caring For Household Member	0.1	61.81	0
+t030201	Homework (hh children)	Caring For & Helping Household (HH) Member	Caring For Household Member	1.77	54.71	0.03
+t030202	Meetings and school conferences (hh children)	Caring For & Helping Household (HH) Member	Caring For Household Member	0.16	53.92	0
+t030203	Home schooling of hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.21	197.82	0
+t030204	Waiting associated with hh children's education	Caring For & Helping Household (HH) Member	Caring For Household Member	0	19	0
+t030299	Activities related to hh child's education, n.e.c.*	Caring For & Helping Household (HH) Member	Caring For Household Member	0.03	49.53	0
+t030301	Providing medical care to hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.22	44.38	0
+t030302	Obtaining medical care for hh children	Caring For & Helping Household (HH) Member	Caring For Household Member	0.26	69.38	0
+t030303	Waiting associated with hh children's health	Caring For & Helping Household (HH) Member	Caring For Household Member	0.11	52.72	0
+t030399	Activities related to hh child's health, n.e.c.*	Caring For & Helping Household (HH) Member	Caring For Household Member	0.05	161.01	0
+t030401	Physical care for hh adults	Caring For & Helping Household (HH) Member	Caring For Household Member	0.73	49.42	0.01
+t030402	Looking after hh adult (as a primary activity)	Caring For & Helping Household (HH) Member	Caring For Household Member	0.06	35.87	0
+t030403	Providing medical care to hh adult	Caring For & Helping Household (HH) Member	Caring For Household Member	0.17	32.99	0.01
+t030404	Obtaining medical and care services for hh adult	Caring For & Helping Household (HH) Member	Caring For Household Member	0.24	95.76	0
+t030405	Waiting associated with caring for household adults	Caring For & Helping Household (HH) Member	Caring For Household Member	0.2	87.2	0
+t030499	Caring for household adults, n.e.c.*	Caring For & Helping Household (HH) Member	Caring For Household Member	0.06	145.41	0
+t030501	Helping hh adults	Caring For & Helping Household (HH) Member	Caring For Household Member	0.21	65.05	0
+t030502	Organization & planning for hh adults	Caring For & Helping Household (HH) Member	Caring For Household Member	0.09	45.1	0
+t030503	Picking up/dropping off hh adult	Caring For & Helping Household (HH) Member	Caring For Household Member	0.21	8.51	0.02
+t030504	Waiting associated with helping hh adults	Caring For & Helping Household (HH) Member	Caring For Household Member	0.24	23.99	0.01
+t030599	Helping household adults, n.e.c.*	Caring For & Helping Household (HH) Member	Caring For Household Member	0.06	70.79	0
+t039999	Caring for & helping hh members, n.e.c.*	Caring For & Helping Household (HH) Member	Caring For Household Member	0.01	62.4	0
+t040101	Physical care for nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.66	59.76	0.01
+t040102	Reading to/with nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.06	37.97	0
+t040103	Playing with nonhh children, not sports	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	1.64	121.69	0.01
+t040104	Arts and crafts with nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.02	62.02	0
+t040105	Playing sports with nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.04	72.16	0
+t040108	Organization & planning for nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.04	40.62	0
+t040109	Looking after nonhh children (as primary activity)	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.79	133.77	0.01
+t040110	Attending nonhh children's events	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.32	117.74	0
+t040111	Waiting for/with nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.06	22.26	0
+t040112	Dropping off/picking up nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.22	9.56	0.02
+t040186	NA	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.3	60.81	0
+t040199	Caring for and helping nonhh children, n.e.c.*	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.13	99.18	0
+t040201	Homework (nonhh children)	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.09	55.96	0
+t040202	Meetings and school conferences (nonhh children)	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.01	53.27	0
+t040203	Home schooling of nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.02	174.37	0
+t040204	Waiting associated with nonhh children's education	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0	8.4	0
+t040299	Activities related to nonhh child's educ., n.e.c.*	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0	64.68	0
+t040301	Providing medical care to nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.01	58.67	0
+t040302	Obtaining medical care for nonhh children	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.02	68.31	0
+t040303	Waiting associated with nonhh children's health	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.02	60.79	0
+t040399	Activities related to nonhh child's health, n.e.c.*	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.02	190.94	0
+t040401	Physical care for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.28	69.92	0
+t040402	Looking after nonhh adult (as a primary activity)	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.06	66.81	0
+t040403	Providing medical care to nonhh adult	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.05	37.14	0
+t040404	Obtaining medical and care services for nonhh adult	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.12	85.28	0
+t040405	Waiting associated with caring for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.15	105.32	0
+t040499	Caring for nonhh adults, n.e.c.*	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.14	132.18	0
+t040501	Housework, cooking, & shopping assistance for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.6	74.87	0.01
+t040502	House & lawn maintenance & repair assistance for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	1.04	150.96	0.01
+t040503	Animal & pet care assistance for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.12	44.73	0
+t040504	Vehicle & appliance maintenance/repair assistance for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.36	96.38	0
+t040505	Financial management assistance for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.07	64.2	0
+t040506	Household management & paperwork assistance for nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.46	76.17	0.01
+t040507	Picking up/dropping off nonhh adult	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.44	9.35	0.05
+t040508	Waiting associated with helping nonhh adults	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.25	27.57	0.01
+t040599	Helping nonhh adults, n.e.c.*	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.35	109.72	0
+t049999	Caring for & helping nonhh members, n.e.c.*	Caring For & Helping Nonhousehold (NonHH) Members	Caring For Nonhousehold Members	0.02	101.82	0
+t050101	Work, main job	Work & Work Related Activities	Work	190.84	450.39	0.42
+t050102	Work, other job(s)	Work & Work Related Activities	Work	4.9	221.61	0.02
+t050103	Security procedures related to work	Work & Work Related Activities	Work	0.01	13.97	0
+t050189	NA	Work & Work Related Activities	Work	0.21	25.34	0.01
+t050201	Socializing, relaxing, and leisure as part of job	Work & Work Related Activities	Work	0.09	147.24	0
+t050202	Eating and drinking as part of job	Work & Work Related Activities	Work	0.22	62.91	0
+t050203	Sports and exercise as part of job	Work & Work Related Activities	Work	0.02	132.92	0
+t050204	Security procedures as part of job	Work & Work Related Activities	Work	0	14.47	0
+t050289	NA	Work & Work Related Activities	Work	0.03	42.09	0
+t050301	Income-generating hobbies, crafts, and food	Work & Work Related Activities	Work	0.18	145.71	0
+t050302	Income-generating performances	Work & Work Related Activities	Work	0.03	155.76	0
+t050303	Income-generating services	Work & Work Related Activities	Work	0.63	151.93	0
+t050304	Income-generating rental property activities	Work & Work Related Activities	Work	0.09	159.76	0
+t050389	NA	Work & Work Related Activities	Work	0.71	149.03	0
+t050403	Job interviewing	Work & Work Related Activities	Work	0.13	78.29	0
+t050404	Waiting associated with job search or interview	Work & Work Related Activities	Work	0.03	54.08	0
+t050405	Security procedures rel. to job search/interviewing	Work & Work Related Activities	Work	0	8.92	0
+t050481	NA	Work & Work Related Activities	Work	1.74	137	0.01
+t050499	Job search and Interviewing, n.e.c.*	Work & Work Related Activities	Work	0.03	111.68	0
+t059999	Work and work-related activities, n.e.c.*	Work & Work Related Activities	Work	0.01	61.75	0
+t060101	Taking class for degree, certification, or licensure	Education	Education	14.97	314.16	0.05
+t060102	Taking class for personal interest	Education	Education	0.79	128.79	0.01
+t060103	Waiting associated with taking classes	Education	Education	0.07	23.14	0
+t060104	Security procedures rel. to taking classes	Education	Education	0	6.25	0
+t060199	Taking class, n.e.c.*	Education	Education	0.17	178.11	0
+t060201	Extracurricular club activities	Education	Education	0.06	98.57	0
+t060202	Extracurricular music & performance activities	Education	Education	0.17	129.58	0
+t060203	Extracurricular student government activities	Education	Education	0.01	77.98	0
+t060289	NA	Education	Education	0.03	81.24	0
+t060301	Research/homework for class for degree, certification, or licensure	Education	Education	9.09	167.91	0.05
+t060302	Research/homework for class for pers. interest	Education	Education	0.24	108.56	0
+t060303	Waiting associated with research/homework	Education	Education	0	18.25	0
+t060399	Research/homework n.e.c.*	Education	Education	0.18	138.73	0
+t060401	Administrative activities: class for degree, certification, or licensure	Education	Education	0.14	79.39	0
+t060402	Administrative activities: class for personal interest	Education	Education	0	36.28	0
+t060403	Waiting associated w/admin. activities (education)	Education	Education	0	33.54	0
+t060499	Administrative for education, n.e.c.*	Education	Education	0.05	72.05	0
+t069999	Education, n.e.c.*	Education	Education	0.19	98.56	0
+t070101	Grocery shopping	Consumer Purchases	Consumer Purchases	6.2	44.98	0.14
+t070102	Purchasing gas	Consumer Purchases	Consumer Purchases	0.37	9.59	0.04
+t070103	Purchasing food (not groceries)	Consumer Purchases	Consumer Purchases	1.25	10.37	0.12
+t070104	Shopping, except groceries, food and gas	Consumer Purchases	Consumer Purchases	14.47	66.74	0.22
+t070105	Waiting associated with shopping	Consumer Purchases	Consumer Purchases	0.09	21.46	0
+t070199	Shopping, n.e.c.*	Consumer Purchases	Consumer Purchases	0	15.12	0
+t070201	Comparison shopping	Consumer Purchases	Consumer Purchases	0.07	63.19	0
+t070299	Researching purchases, n.e.c.*	Consumer Purchases	Consumer Purchases	0	32.83	0
+t070301	Security procedures rel. to consumer purchases	Consumer Purchases	Consumer Purchases	0	19.52	0
+t070399	Security procedures rel. to consumer purchases, n.e.c.*	Consumer Purchases	Consumer Purchases	0	45	0
+t079999	Consumer purchases, n.e.c.*	Consumer Purchases	Consumer Purchases	0	62.46	0
+t080101	Using paid childcare services	Professional & Personal Care Services	Professional & Personal Care Services	0.03	19.35	0
+t080102	Waiting associated w/purchasing childcare svcs	Professional & Personal Care Services	Professional & Personal Care Services	0	24.83	0
+t080199	Using paid childcare services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	8.87	0
+t080201	Banking	Professional & Personal Care Services	Professional & Personal Care Services	0.34	13.3	0.03
+t080202	Using other financial services	Professional & Personal Care Services	Professional & Personal Care Services	0.1	52.24	0
+t080203	Waiting associated w/banking/financial services	Professional & Personal Care Services	Professional & Personal Care Services	0.01	30.24	0
+t080299	Using financial services and banking, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	28.36	0
+t080301	Using legal services	Professional & Personal Care Services	Professional & Personal Care Services	0.04	62.15	0
+t080302	Waiting associated with legal services	Professional & Personal Care Services	Professional & Personal Care Services	0	19.72	0
+t080399	Using legal services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	17.3	0
+t080401	Using health and care services outside the home	Professional & Personal Care Services	Professional & Personal Care Services	2.57	76.31	0.03
+t080402	Using in-home health and care services	Professional & Personal Care Services	Professional & Personal Care Services	0.05	62.8	0
+t080403	Waiting associated with medical services	Professional & Personal Care Services	Professional & Personal Care Services	0.44	39.39	0.01
+t080499	Using medical services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0.02	103.43	0
+t080501	Using personal care services	Professional & Personal Care Services	Professional & Personal Care Services	1.01	67.08	0.02
+t080502	Waiting associated w/personal care services	Professional & Personal Care Services	Professional & Personal Care Services	0.05	29.01	0
+t080599	Using personal care services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	34.36	0
+t080601	Activities rel. to purchasing/selling real estate	Professional & Personal Care Services	Professional & Personal Care Services	0.24	78.32	0
+t080602	Waiting associated w/purchasing/selling real estate	Professional & Personal Care Services	Professional & Personal Care Services	0.01	139.88	0
+t080699	Using real estate services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	27.16	0
+t080701	Using veterinary services	Professional & Personal Care Services	Professional & Personal Care Services	0.08	40.73	0
+t080702	Waiting associated with veterinary services	Professional & Personal Care Services	Professional & Personal Care Services	0.02	47.32	0
+t080799	Using veterinary services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	79.26	0
+t080801	Security procedures rel. to professional/personal svcs.	Professional & Personal Care Services	Professional & Personal Care Services	0	5	0
+t080899	Security procedures rel. to professional/personal svcs n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0	0	0
+t089999	Professional and personal services, n.e.c.*	Professional & Personal Care Services	Professional & Personal Care Services	0.06	58.03	0
+t090101	Using interior cleaning services	Household Services	Household Services	0.01	45.96	0
+t090102	Using meal preparation services	Household Services	Household Services	0	47.83	0
+t090103	Using clothing repair and cleaning services	Household Services	Household Services	0.03	8.16	0
+t090104	Waiting associated with using household services	Household Services	Household Services	0.01	111.23	0
+t090199	Using household services, n.e.c.*	Household Services	Household Services	0.01	48.05	0
+t090201	Using home maint/repair/décor/construction svcs	Household Services	Household Services	0.21	60.8	0
+t090202	Waiting associated w/ home main/repair/décor/constr	Household Services	Household Services	0.14	105.75	0
+t090299	Using home maint/repair/décor/constr services, n.e.c.*	Household Services	Household Services	0	31.37	0
+t090301	Using pet services	Household Services	Household Services	0.02	24.65	0
+t090302	Waiting associated with pet services	Household Services	Household Services	0	53.35	0
+t090399	Using pet services, n.e.c.*	Household Services	Household Services	0	17.28	0
+t090401	Using lawn and garden services	Household Services	Household Services	0.02	40.33	0
+t090402	Waiting associated with using lawn & garden services	Household Services	Household Services	0.01	156.45	0
+t090499	Using lawn and garden services, n.e.c.*	Household Services	Household Services	0	15.95	0
+t090501	Using vehicle maintenance or repair services	Household Services	Household Services	0.23	33.94	0.01
+t090502	Waiting associated with vehicle main. or repair svcs	Household Services	Household Services	0.18	54.91	0
+t090599	Using vehicle maint. & repair svcs, n.e.c.*	Household Services	Household Services	0.01	25.77	0
+t099999	Using household services, n.e.c.*	Household Services	Household Services	0.02	49.07	0
+t100101	Using police and fire services	Government Services & Civic Obligations	Other	0.02	40.83	0
+t100102	Using social services	Government Services & Civic Obligations	Other	0.08	72.02	0
+t100103	Obtaining licenses & paying fines, fees, taxes	Government Services & Civic Obligations	Other	0.09	39.61	0
+t100199	Using government services, n.e.c.*	Government Services & Civic Obligations	Other	0.02	57.07	0
+t100201	Civic obligations & participation	Government Services & Civic Obligations	Other	0.15	76.11	0
+t100299	Civic obligations & participation, n.e.c.*	Government Services & Civic Obligations	Other	0.01	73.05	0
+t100381	NA	Government Services & Civic Obligations	Other	0.04	53.48	0
+t100383	NA	Government Services & Civic Obligations	Other	0.02	90.37	0
+t100399	Waiting assoc. w/govt svcs or civic obligations, n.e.c.*	Government Services & Civic Obligations	Other	0.01	62.07	0
+t100401	Security procedures rel. to govt svcs/civic obligations	Government Services & Civic Obligations	Other	0	6.59	0
+t100499	Security procedures rel. to govt svcs/civic obligations, n.e.c.*	Government Services & Civic Obligations	Other	0	15	0
+t109999	Government services, n.e.c.*	Government Services & Civic Obligations	Other	0	52.29	0
+t110101	Eating and drinking	Eating and Drinking	Eating and Drinking	65.8	68.84	0.96
+t110199	Eating and drinking, n.e.c.*	Eating and Drinking	Eating and Drinking	0	0	0
+t110281	NA	Eating and Drinking	Eating and Drinking	0.2	22.66	0.01
+t110289	NA	Eating and Drinking	Eating and Drinking	0	26.21	0
+t119999	Eating and drinking, n.e.c.*	Eating and Drinking	Eating and Drinking	0	5.75	0
+t120101	Socializing and communicating with others	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	37.77	104.04	0.36
+t120199	Socializing and communicating, n.e.c.*	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0	31.37	0
+t120201	Attending or hosting parties/receptions/ceremonies	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	4.07	197.74	0.02
+t120202	Attending meetings for personal interest (not volunteering)	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.68	116.34	0.01
+t120299	Attending/hosting social events, n.e.c.*	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.03	135.61	0
+t120301	Relaxing, thinking	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	18.06	89.46	0.2
+t120302	Tobacco and drug use	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.42	24.19	0.02
+t120303	Television and movies (not religious)	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	163.58	205.72	0.8
+t120304	Television (religious)	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.19	121.73	0
+t120305	Listening to the radio	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	1.33	80.32	0.02
+t120306	Listening to/playing music (not radio)	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	2.08	86.7	0.02
+t120307	Playing games	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	12.94	132.57	0.1
+t120308	Computer use for leisure (exc. Games)	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	10.6	92.62	0.11
+t120309	Arts and crafts as a hobby	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	1.64	139.61	0.01
+t120310	Collecting as a hobby	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.04	160.01	0
+t120311	Hobbies, except arts & crafts and collecting	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.28	147.33	0
+t120312	Reading for personal interest	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	19.58	87.4	0.22
+t120313	Writing for personal interest	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.29	112.06	0
+t120399	Relaxing and leisure, n.e.c.*	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.18	82.62	0
+t120401	Attending performing arts	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.96	165.37	0.01
+t120402	Attending museums	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.34	148.03	0
+t120403	Attending movies/film	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	1.74	137.02	0.01
+t120404	Attending gambling establishments	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.58	180.61	0
+t120405	Security procedures rel. to arts & entertainment	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0	25.76	0
+t120499	Arts and entertainment, n.e.c.*	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	1.59	167.73	0.01
+t120501	Waiting assoc. w/socializing & communicating	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.02	22.44	0
+t120502	Waiting assoc. w/attending/hosting social events	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.01	33.79	0
+t120503	Waiting associated with relaxing/leisure	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0	21.31	0
+t120504	Waiting associated with arts & entertainment	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.05	32.22	0
+t120599	Waiting associated with socializing, n.e.c.*	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0	54.73	0
+t129999	Socializing, relaxing, and leisure, n.e.c.*	Socializing, Relaxing, and Leisure	Socializing, Relaxing, and Leisure	0.02	81.49	0
+t130101	Doing aerobics	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.17	50.95	0
+t130102	Playing baseball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.16	142.23	0
+t130103	Playing basketball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.83	125.12	0.01
+t130104	Biking	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.5	79.32	0.01
+t130105	Playing billiards	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.33	126.57	0
+t130106	Boating	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.3	177.35	0
+t130107	Bowling	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.4	153.2	0
+t130108	Climbing, spelunking, caving	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.03	172.18	0
+t130109	Dancing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.31	132	0
+t130110	Participating in equestrian sports	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.11	135.9	0
+t130111	Fencing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	120	0
+t130112	Fishing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	1.05	252.56	0
+t130113	Playing football	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.28	130.44	0
+t130114	Golfing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	1.15	203.36	0.01
+t130115	Doing gymnastics	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	139.13	0
+t130116	Hiking	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.26	140.67	0
+t130117	Playing hockey	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.04	126.37	0
+t130118	Hunting	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.63	285.43	0
+t130119	Participating in martial arts	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.07	86.66	0
+t130120	Playing racquet sports	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.28	111.81	0
+t130121	Participating in rodeo competitions	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	97.82	0
+t130122	Rollerblading	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.12	132.06	0
+t130123	Playing rugby	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	187.66	0
+t130124	Running	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.76	51.46	0.01
+t130125	Skiing, ice skating, snowboarding	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.18	189.94	0
+t130126	Playing soccer	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.32	119.12	0
+t130127	Softball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.16	133.49	0
+t130128	Using cardiovascular equipment	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.68	41.16	0.02
+t130129	Vehicle touring/racing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.2	143.68	0
+t130130	Playing volleyball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.16	126.2	0
+t130131	Walking	Sports Exercise and Recreation	Sports, Exercise, and Recreation	2.97	53.74	0.06
+t130132	Participating in water sports	Sports Exercise and Recreation	Sports, Exercise, and Recreation	1.51	107.86	0.01
+t130133	Weightlifting/strength training	Sports Exercise and Recreation	Sports, Exercise, and Recreation	1.06	53.19	0.02
+t130134	Working out, unspecified	Sports Exercise and Recreation	Sports, Exercise, and Recreation	2.04	55.5	0.04
+t130135	Wrestling	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	109.28	0
+t130136	Doing yoga	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.23	54.87	0
+t130199	Playing sports n.e.c.*	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.62	83.94	0.01
+t130201	Watching aerobics	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	59.22	0
+t130202	Watching baseball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.32	176.61	0
+t130203	Watching basketball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.31	138.26	0
+t130204	Watching biking	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	123.82	0
+t130205	Watching billiards	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	151.08	0
+t130206	Watching boating	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	145.3	0
+t130207	Watching bowling	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	140.44	0
+t130208	Watching climbing, spelunking, caving	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	0	0
+t130209	Watching dancing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	171.94	0
+t130210	Watching equestrian sports	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.03	181.11	0
+t130211	Watching fencing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	120	0
+t130212	Watching fishing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	137.54	0
+t130213	Watching football	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.33	174.02	0
+t130214	Watching golfing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	271.64	0
+t130215	Watching gymnastics	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	130.97	0
+t130216	Watching hockey	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.08	150.96	0
+t130217	Watching martial arts	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	91.28	0
+t130218	Watching racquet sports	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.03	126.8	0
+t130219	Watching rodeo competitions	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.01	185.75	0
+t130220	Watching rollerblading	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	106.88	0
+t130221	Watching rugby	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	90.01	0
+t130222	Watching running	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	138.45	0
+t130223	Watching skiing, ice skating, snowboarding	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	50.31	0
+t130224	Watching soccer	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.12	113.15	0
+t130225	Watching softball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.09	158.31	0
+t130226	Watching vehicle touring/racing	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.1	271.68	0
+t130227	Watching volleyball	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.03	130.17	0
+t130228	Watching walking	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	0	0
+t130229	Watching water sports	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.03	176.9	0
+t130230	Watching weightlifting/strength training	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	230	0
+t130231	Watching people working out, unspecified	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	70.2	0
+t130232	Watching wrestling	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.03	235.92	0
+t130299	Attending sporting events, n.e.c.*	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.12	178.23	0
+t130301	Waiting related to playing sports or exercising	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.04	30.56	0
+t130302	Waiting related to attending sporting events	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	44.86	0
+t130399	Waiting associated with sports, exercise, & recreation, n.e.c.*	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	103.07	0
+t130401	Security related to playing sports or exercising	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	14.56	0
+t130402	Security related to attending sporting events	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	10.53	0
+t130499	Security related to sports, exercise, & recreation, n.e.c.*	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0	0	0
+t139999	Sports, exercise, & recreation, n.e.c.*	Sports Exercise and Recreation	Sports, Exercise, and Recreation	0.02	74.81	0
+t140101	Attending religious services	Religious and Spiritual Activities	Religious and Volunteer Activities	5.62	114.84	0.05
+t140102	Participation in religious practices	Religious and Spiritual Activities	Religious and Volunteer Activities	2.26	50.86	0.04
+t140103	Waiting associated w/religious & spiritual activities	Religious and Spiritual Activities	Religious and Volunteer Activities	0.04	21.72	0
+t140104	Security procedures rel. to religious & spiritual activities	Religious and Spiritual Activities	Religious and Volunteer Activities	0	157.79	0
+t140105	Religious education activities	Religious and Spiritual Activities	Religious and Volunteer Activities	0.59	82.23	0.01
+t149999	Religious and spiritual activities, n.e.c.*	Religious and Spiritual Activities	Religious and Volunteer Activities	0.03	133.43	0
+t150101	Computer use	Volunteer Activities	Religious and Volunteer Activities	0.67	75.61	0.01
+t150102	Organizing and preparing	Volunteer Activities	Religious and Volunteer Activities	0.67	85.12	0.01
+t150103	Reading	Volunteer Activities	Religious and Volunteer Activities	0.13	88.57	0
+t150104	Telephone calls (except hotline counseling)	Volunteer Activities	Religious and Volunteer Activities	0.19	43.27	0
+t150105	Writing	Volunteer Activities	Religious and Volunteer Activities	0.08	89.43	0
+t150106	Fundraising	Volunteer Activities	Religious and Volunteer Activities	0.25	123.48	0
+t150199	Administrative & support activities, n.e.c.*	Volunteer Activities	Religious and Volunteer Activities	0.25	86.42	0
+t150201	Food preparation, presentation, clean-up	Volunteer Activities	Religious and Volunteer Activities	0.62	124.53	0
+t150202	Collecting & delivering clothing & other goods	Volunteer Activities	Religious and Volunteer Activities	0.12	64.6	0
+t150203	Providing care	Volunteer Activities	Religious and Volunteer Activities	0.27	120.09	0
+t150204	Teaching, leading, counseling, mentoring	Volunteer Activities	Religious and Volunteer Activities	1.02	121.49	0.01
+t150299	Social service & care activities, n.e.c.*	Volunteer Activities	Religious and Volunteer Activities	0.17	136.1	0
+t150301	Building houses, wildlife sites, & other structures	Volunteer Activities	Religious and Volunteer Activities	0.03	191.3	0
+t150302	Indoor & outdoor maintenance, repair, & clean-up	Volunteer Activities	Religious and Volunteer Activities	0.42	104.06	0
+t150399	Indoor & outdoor maintenance, building & clean-up activities, n.e.c.*	Volunteer Activities	Religious and Volunteer Activities	0.03	98.89	0
+t150401	Performing	Volunteer Activities	Religious and Volunteer Activities	0.37	113.99	0
+t150402	Serving at volunteer events & cultural activities	Volunteer Activities	Religious and Volunteer Activities	0.24	161.98	0
+t150499	Participating in performance & cultural activities, n.e.c.*	Volunteer Activities	Religious and Volunteer Activities	0.03	133.24	0
+t150501	Attending meetings, conferences, & training	Volunteer Activities	Religious and Volunteer Activities	0.98	117.04	0.01
+t150599	Attending meetings, conferences, & training, n.e.c.*	Volunteer Activities	Religious and Volunteer Activities	0.01	124.98	0
+t150601	Public health activities	Volunteer Activities	Religious and Volunteer Activities	0.03	103.75	0
+t150602	Public safety activities	Volunteer Activities	Religious and Volunteer Activities	0.05	110.93	0
+t150699	Public health & safety activities, n.e.c.*	Volunteer Activities	Religious and Volunteer Activities	0.01	136.86	0
+t159989	NA	Volunteer Activities	Religious and Volunteer Activities	1.77	119.81	0.01
+t160101	Telephone calls to/from family members	Telephone Calls	Other	2.24	33.64	0.07
+t160102	Telephone calls to/from friends, neighbors, or acquaintances	Telephone Calls	Other	2.23	45.45	0.05
+t160103	Telephone calls to/from education services providers	Telephone Calls	Other	0.02	32.58	0
+t160104	Telephone calls to/from salespeople	Telephone Calls	Other	0.05	24.68	0
+t160105	Telephone calls to/from professional or personal care svcs providers	Telephone Calls	Other	0.15	26.99	0.01
+t160106	Telephone calls to/from household services providers	Telephone Calls	Other	0.06	25.69	0
+t160107	Telephone calls to/from paid child or adult care providers	Telephone Calls	Other	0.01	25.28	0
+t160108	Telephone calls to/from government officials	Telephone Calls	Other	0.02	24.88	0
+t169989	NA	Telephone Calls	Other	1.66	45.56	0.04
+t180101	Travel related to personal care	Traveling	Personal Care	0.99	39.55	0.03
+t180199	Travel related to personal care, n.e.c.*	Traveling	Personal Care	0	41.43	0
+t180280	NA	Traveling	Household Activities	2.6	28.6	0.09
+t180381	NA	Traveling	Caring For Household Member	3.74	35	0.11
+t180382	NA	Traveling	Caring For Household Member	1.13	39.67	0.03
+t180399	Travel rel. to caring for & helping hh members, n.e.c.*	Traveling	Caring For Household Member	0	16.8	0
+t180481	NA	Traveling	Caring For Nonhousehold Members	1.03	31.35	0.03
+t180482	NA	Traveling	Caring For Nonhousehold Members	2.75	38.41	0.07
+t180499	Travel rel. to caring for & helping nonhh members, n.e.c.*	Traveling	Caring For Nonhousehold Members	0	31.13	0
+t180501	Travel related to working	Traveling	Work	16.18	44.83	0.36
+t180502	Travel related to work-related activities	Traveling	Work	0.18	27.59	0.01
+t180589	NA	Traveling	Work	0.42	44.26	0.01
+t180601	Travel related to taking class	Traveling	Education	1.55	34.43	0.04
+t180682	NA	Traveling	Education	0.32	25.91	0.01
+t180699	Travel related to education, n.e.c.*	Traveling	Education	0.02	28.18	0
+t180701	Travel related to grocery shopping	Traveling	Consumer Purchases	3.31	24.06	0.14
+t180782	NA	Traveling	Consumer Purchases	10.79	35.15	0.31
+t180801	Travel related to using childcare services	Traveling	Professional & Personal Care Services	0.02	24.24	0
+t180802	Travel related to using financial services and banking	Traveling	Professional & Personal Care Services	0.43	16.53	0.03
+t180803	Travel related to using legal services	Traveling	Professional & Personal Care Services	0.02	34.62	0
+t180804	Travel related to using medical services	Traveling	Professional & Personal Care Services	1.18	36.07	0.03
+t180805	Travel related to using personal care services	Traveling	Professional & Personal Care Services	0.33	22.86	0.01
+t180806	Travel related to using real estate services	Traveling	Professional & Personal Care Services	0.13	47.32	0
+t180807	Travel related to using veterinary services	Traveling	Professional & Personal Care Services	0.07	32.03	0
+t180899	Travel rel. to using prof. & personal care services, n.e.c.*	Traveling	Professional & Personal Care Services	0.02	29.55	0
+t180901	Travel related to using household services	Traveling	Household Services	0.06	15.84	0
+t180902	Travel related to using home main./repair/décor./construction svcs	Traveling	Household Services	0.02	23.55	0
+t180903	Travel related to using pet services (not vet)	Traveling	Household Services	0.04	38.88	0
+t180904	Travel related to using lawn and garden services	Traveling	Household Services	0	12.91	0
+t180905	Travel related to using vehicle maintenance & repair services	Traveling	Household Services	0.29	29.85	0.01
+t180999	Travel related to using household services, n.e.c.*	Traveling	Household Services	0	21.68	0
+t181002	Travel related to civic obligations & participation	Traveling	Other	0.05	29.43	0
+t181081	NA	Traveling	Other	0.12	30.4	0
+t181099	Travel rel. to govt svcs & civic obligations, n.e.c.*	Traveling	Other	0	29.31	0
+t181101	Travel related to eating and drinking	Traveling	Eating and Drinking	6.96	28.79	0.24
+t181199	Travel related to eating and drinking, n.e.c.*	Traveling	Eating and Drinking	0	17.23	0
+t181201	Travel related to socializing and communicating	Traveling	Socializing, Relaxing, and Leisure	5.57	31.56	0.18
+t181202	Travel related to attending or hosting social events	Traveling	Socializing, Relaxing, and Leisure	0.78	35.97	0.02
+t181204	Travel related to arts and entertainment	Traveling	Socializing, Relaxing, and Leisure	1.09	40.02	0.03
+t181283	NA	Traveling	Socializing, Relaxing, and Leisure	3.14	35.41	0.09
+t181299	Travel rel. to socializing, relaxing, & leisure, n.e.c.*	Traveling	Socializing, Relaxing, and Leisure	0.02	119.5	0
+t181301	Travel related to participating in sports/exercise/recreation	Traveling	Sports, Exercise, and Recreation	2.35	26.82	0.09
+t181302	Travel related to attending sporting/recreational events	Traveling	Sports, Exercise, and Recreation	0.39	41.1	0.01
+t181399	Travel related to sports, exercise, & recreation, n.e.c.*	Traveling	Sports, Exercise, and Recreation	0.01	38.43	0
+t181401	Travel related to religious/spiritual practices	Traveling	Religious and Volunteer Activities	1.3	26.09	0.05
+t181499	Travel rel. to religious/spiritual activities, n.e.c.*	Traveling	Religious and Volunteer Activities	0	19.08	0
+t181501	Travel related to volunteering	Traveling	Religious and Volunteer Activities	1.06	27.44	0.04
+t181599	Travel related to volunteer activities, n.e.c.*	Traveling	Religious and Volunteer Activities	0.05	30.29	0
+t181601	Travel related to phone calls	Traveling	Other	0.17	26.66	0.01
+t181699	Travel rel. to phone calls, n.e.c.*	Traveling	Other	0	21.5	0
+t181801	Security procedures related to traveling	Traveling	Other	0.06	57.59	0
+t181899	Security procedures related to traveling, n.e.c.*	Traveling	Other	0.02	58.12	0
+t189999	Traveling, n.e.c.*	Traveling	Other	1.84	51.81	0.04
+t500101	Insufficient detail in verbatim	Data Codes	Other	6.66	88.45	0.08
+t500103	Missing travel or destination	Data Codes	Other	0.7	40.04	0.02
+t500104	NA	Data Codes	Other	0.36	78.85	0
+t500105	"""Respondent refused to provide information/""""none of your business"""""""	Data Codes	Other	0.25	69.88	0
+t500106	Gap/can't remember	Data Codes	Other	3.76	69.61	0.05
+t500107	Unable to code activity at 1st tier	Data Codes	Other	0.11	37.26	0
+t509989	NA	Data Codes	Other	0.02	68.08	0
