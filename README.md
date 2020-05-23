@@ -1,7 +1,9 @@
 # ATUS
 Analysis of the [American Time Use Survey](https://www.bls.gov/tus/).  
 
-See blog post: [marlo.works/posts/atus/](https://joemarlo.github.io/posts/atus/)
+## Analyses
+- See blog post: [marlo.works/posts/atus/](https://joemarlo.github.io/posts/atus/)
+- [ATUS cluster analysis](https://github.com/joemarlo/ATUS-cluster-analysis)
 
 <br>
 

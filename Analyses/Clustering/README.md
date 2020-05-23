@@ -1,5 +1,1 @@
-# Clustering people's time
-
-## Notes
-- Similar length and style as A/B testing
-- What to do about survey weights when clustering?
+This is the cleaning script and clean data for [ATUS cluster analysis repo](https://github.com/joemarlo/ATUS-cluster-analysis)
