@@ -5,4 +5,5 @@
 
 Inputs/ATUS-2018/*.dat
 Inputs/ATUS-2003-2018/*.dat
+Analyses/Sequence-analysis/*.tsv
 .DS_Store

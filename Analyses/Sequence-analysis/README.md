@@ -1,0 +1,1 @@
+This is the cleaning script and clean data for [ATUS sequence analysis repo](https://github.com/joemarlo/ATUS-sequence-analysis)
