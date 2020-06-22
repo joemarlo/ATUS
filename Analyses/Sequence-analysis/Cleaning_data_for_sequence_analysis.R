@@ -93,7 +93,8 @@ split_ATUS <- ATUS %>%
 # for each respondent, expand the dataframe into increments of 5 minutes
 # takes about 10-40min to run
 ATUS_5 <- parallel::mclapply(split_ATUS, FUN = function(tbl) {
-  # for e
+  # pivot each table so there is a time column with each row representing
+  #   periods of 5 minutes
   tbl <-
     pmap_dfr(
       .l = list(tbl$TUCASEID, tbl$start_time, tbl$end_time, tbl$description),
@@ -127,8 +128,8 @@ Mode <- function(x) {
 # summarize the data using the mode
 ATUS_30 <- ATUS_5 %>% 
   group_by(ID) %>% 
-  mutate(chunk = floor(time / 30) + 1) %>% 
-  group_by(ID, chunk) %>% 
+  mutate(period = floor(time / 30) + 1) %>% 
+  group_by(ID, period) %>% 
   summarize(description = Mode(description)) %>% 
   ungroup()
 
@@ -212,7 +213,7 @@ table(demographic_vars$child_under_12)
 
 
 # write out the final datasets --------------------------------------------
-write_tsv(ATUS_30, 'Analyses/Sequence_analysis/atus.tsv')
-write_tsv(demographic_vars, 'Analyses/Sequence_analysis/demographic.tsv')
+write_tsv(ATUS_30, 'Analyses/Sequence-analysis/atus.tsv')
+write_tsv(demographic_vars, 'Analyses/Sequence-analysis/demographic.tsv')
 
 
