@@ -55,13 +55,19 @@ curated.codes <- tribble(
 
 # cut down atus activity file ---------------------------------------------
 
-# join with descriptions
-ATUS <- atusact_0318 %>% 
+# create list of IDs that responded to diary on weekdays and non-holidays
+weekday_IDs <- atusresp_0318 %>% 
+  filter(TUDIARYDAY %in% 2:6,
+         TRHOLIDAY == 0) %>% 
+  select(TUCASEID)
+
+# filter out non-weekdays and holidays then join with descriptions
+ATUS <- atusact_0318 %>%
+  semi_join(y = weekday_IDs) %>% 
   select(TUCASEID, TUSTARTTIM, TUSTOPTIME, TRCODEP) %>% 
   mutate(activity = paste0("t", TRCODEP)) %>% 
   fuzzyjoin::regex_left_join(y = curated.codes) %>% 
   select(TUCASEID, TUSTARTTIM, TUSTOPTIME, activity = activity.x, description)
-
 
 baseline_time <- function(x_minutes){
   # function baselines time from 4am -> 12am
@@ -91,7 +97,7 @@ split_ATUS <- ATUS %>%
   group_split(TUCASEID)
 
 # for each respondent, expand the dataframe into increments of 5 minutes
-# takes about 10-40min to run
+# takes about 6-40min to run depending on cpu
 ATUS_5 <- parallel::mclapply(split_ATUS, FUN = function(tbl) {
   # pivot each table so there is a time column with each row representing
   #   periods of 5 minutes
@@ -107,7 +113,7 @@ ATUS_5 <- parallel::mclapply(split_ATUS, FUN = function(tbl) {
       }
     )
   
-  # remove duplicate observations (infrequently happens due to rounding to nears 5min)
+  # remove duplicate observations (infrequently happens due to rounding to nearest 5min)
   # add NAs for missing times
   tbl <- tbl %>% 
     group_by(time) %>% 
@@ -138,7 +144,7 @@ ATUS_30 <- ATUS_5 %>%
 
 # from CPS data, get race, marriage status, education, and state 
 CPS_vars <- atuscps_0318 %>%
-  # filter so only person repsonding to ATUS is included
+  # filter so only person responding to ATUS is included
   filter(TULINENO == 1) %>% 
   select(TUCASEID, PEMARITL, PTDTRACE, PEEDUCA, GESTFIPS) %>%
   mutate(
@@ -201,9 +207,6 @@ atus_vars <- atussum_0318 %>%
 demographic_vars <- atus_vars %>% 
   left_join(CPS_vars, by = 'ID') %>% 
   semi_join(distinct(ATUS_30, ID))
-
-# examine counts of each variable
-# apply(demographic_vars, 2, table, exclude = NULL)
 
 # dummy code age_youngest 
 demographic_vars <- demographic_vars %>% 
