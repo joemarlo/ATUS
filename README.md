@@ -34,9 +34,9 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/).
 - [x] Leisure by region
 - [x] Computer use
 
-### Markov chain simulation
-- [ ] Consolidate activities to core items
-- [ ] Build matrix of probabilities
+### Sequence analysis
+- [x] Consolidate activities to core items and convert to strings
+- [x] Calculate stringdist and cluster
 
 <br>
 
