@@ -1,0 +1,1 @@
+This is the cleaning script and clean data for [ATUS time series analysis repo](https://github.com/joemarlo/ATUS-time-series)
