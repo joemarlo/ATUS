@@ -5,6 +5,7 @@ Analysis of the [American Time Use Survey](https://www.bls.gov/tus/).
 - See blog post: [marlo.works/posts/atus/](https://joemarlo.github.io/posts/atus/)
 - [ATUS cluster analysis](https://github.com/joemarlo/ATUS-cluster-analysis)
 - [ATUS sequence analysis](https://github.com/joemarlo/ATUS-sequence-analysis)
+- [ATUS MLM and sequence analysis](https://github.com/joemarlo/ATUS-time-series)
 
 <br>
 
