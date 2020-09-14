@@ -197,7 +197,8 @@ apply_weights <- function(df, groups, activities = NULL){
                  names_to = "activity",
                  values_to = 'time') %>%
     group_by_at(vars(activity, groups)) %>% 
-    summarize(weighted.minutes = sum(.data[[weight.var]] * time) / sum(.data[[weight.var]])) %>%
+    summarize(weighted.minutes = sum(.data[[weight.var]] * time) / sum(.data[[weight.var]]),
+              .groups = 'drop') %>%
     ungroup()
 }
 
@@ -241,7 +242,8 @@ get_minutes <- function(df, groups = NULL, activities = NULL, simplify = NULL){
                  names_to = "activity",
                  values_to = 'time') %>%
     group_by_at(vars(activity, groups)) %>% 
-    summarize(weighted.minutes = sum(.data[[weight.var]] * time) / sum(.data[[weight.var]])) %>%
+    summarize(weighted.minutes = sum(.data[[weight.var]] * time) / sum(.data[[weight.var]]),
+              .groups = 'drop') %>%
     ungroup() %>%
     {
       # if simplifying, then left join to get the descriptions and then
@@ -252,7 +254,8 @@ get_minutes <- function(df, groups = NULL, activities = NULL, simplify = NULL){
                   by = 'activity') %>% 
         select(activity = description, groups, weighted.minutes) %>% 
         group_by_at(vars(activity, groups)) %>%
-        summarize(weighted.minutes = sum(weighted.minutes)) %>% 
+        summarize(weighted.minutes = sum(weighted.minutes),
+                  .groups = 'drop') %>% 
         ungroup()
       } else .
     }
